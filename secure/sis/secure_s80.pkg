@@ -1,0 +1,27 @@
+;
+; Installation file for Secure application
+;
+;Languages
+&EN
+;
+; UID is the app's UID
+;
+#{"Secure"},(0x102032D1),1,0,0
+;
+;Supports Series 80 v 2.0
+(0x101F8ED2), 0, 0, 0, {"Series80ProductID"}
+;
+"..\sis\logo.mbm"-"c:\System\Apps\secure\logo.mbm"
+"..\sis\dog_bark.amr"-"c:\System\Apps\secure\dog_bark.amr"
+"..\sis\config.txt"-"c:\system\apps\ripplevault\config.txt"
+"..\sis\regdetails.dat"-"c:\system\apps\ripplevault\regdetails.dat"
+
+"D:\Symbian\7.0s\S80_DP2_0_SDK\epoc32\release\armi\urel\Secure.app"-"c:\System\Apps\Secure\Secure.app"
+"D:\Symbian\7.0s\S80_DP2_0_SDK\epoc32\release\armi\urel\Secure_s80.r01"-"c:\System\Apps\Secure\Secure.r01"
+"D:\Symbian\7.0s\S80_DP2_0_SDK\epoc32\release\armi\urel\Secure_s80.r31"-"c:\System\Apps\Secure\Secure.r31"
+;".\Secure.aif"-"c:\System\Apps\secure\Secure.aif"
+".\Secure.txt"-"c:\System\Apps\secure\Secure.txt"
+
+""-"c:\secure\imsi.txt",FN
+""-"c:\secure\lock.dat",FN
+""-"c:\secure\log.txt",FN

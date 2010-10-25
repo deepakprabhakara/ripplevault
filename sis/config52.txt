@@ -1,0 +1,11 @@
+server=203.208.144.52
+port=80
+version=2.4.1
+os=6.1
+userid=purple106
+hp=919880002180
+charge=7ADB7445E
+registrationurl=/ripple/rippleservlet
+publishurl=/ripple/photosyncservlet
+wapurl=/ripple/wap?msisdn=1899FF4EE
+apn=NOHARDCODE

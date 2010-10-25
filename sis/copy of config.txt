@@ -1,0 +1,14 @@
+version=2.5.8
+os=7.0s
+userid=Snowbai
+hp=7D58F3877EF
+server=203.208.144.52
+port=80
+registration_url=/ripple/rippleservlet
+contacts_url=/ripple/rippleservlet
+sharing_url=/ripple/sharingservlet
+media_upload_url=/ripple/mediauploadservlet
+media_gallery_url=/ripplewap/secure/mediaGallery.do
+sms_backup_url=/ripple/smsServlet
+album_synch_url=/ripple/albumsyncingservlet
+apn=NOHARDCODE

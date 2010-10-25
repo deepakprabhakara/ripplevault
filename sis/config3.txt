@@ -1,0 +1,16 @@
+version=2.6.5
+os=7.0s
+hp=D62DB90BF8
+server=222.165.138.247
+port=8080
+contacts_url=/ripple/rippleservlet
+registration_url=/ripple/rippleservlet
+media_upload_url=/ripple/mediauploadservlet
+sharing_url=/ripple/sharingservlet
+media_gallery_url=/ripplewap/secure/mediaGallery.do
+sms_backup_url=/ripple/smsServlet
+album_synch_url=/ripple/albumsyncingservlet
+apn=NOHARDCODE
+connection_type=postpaid
+sub_status_check=/ripple/status
+sub_update_url=/ripplewap/changeSubscribtionPlan.do

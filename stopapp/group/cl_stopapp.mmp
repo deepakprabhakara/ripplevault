@@ -1,0 +1,19 @@
+target vault.exe
+targettype exe
+//targetpath \system\recogs\
+
+uid 0
+
+SOURCEPATH ..\src
+SOURCE cl_stopapp.cpp
+
+LANG     SC
+
+USERINCLUDE . ..\inc
+
+SYSTEMINCLUDE  \epoc32\include
+
+
+//library EUSER.LIB APMIME.LIB efsrv.lib apparc.lib apgrfx.lib
+//LIBRARY           efile.lib sysagt.lib bafl.lib ws32.lib
+LIBRARY	euser.lib apgrfx.lib ws32.lib efsrv.lib

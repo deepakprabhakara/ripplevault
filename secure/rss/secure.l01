@@ -1,0 +1,18 @@
+#define ELanguage ELangEnglish
+
+#define STRING_BACK 			"Back"
+#define STRING_CLOSE			"Close"
+#define STRING_SECURE			"Secure"
+#define STRING_ENTERPASSWORD		"Enter PIN"
+
+#define string_unlock_text_uiq			"Press 'Jog dial' to unlock"
+
+#define string_secure_status			"Status: Running"
+#define string_frozen_text				"This phone is frozen."
+#define string_sms_text					"A new SIM was inserted into your phone. This message was sent using the new SIM in your phone to help you identify your phone's likely thief."
+#define string_exit_text				"Your phone is protected by  Easy Secure. If you close   Easy Secure, your phone will be unprotected until you  turn ON Easy Secure, or restart your phone."
+#define string_unlock_text				"Press '#' to unlock"
+#define string_sms_freeze_text			"Hello EASY Secure user. Ur phone is successfully frozen & rendered unusable. Send UNFREEZE <password> to ur phone to unfreeze & restore its functionality."
+#define string_sms_freeze_vacuum_text 	"Hello Easy Secure user. Ur phone is successfully frozen & rendered unusable. Send UNFREEZE <password> to ur phone to unfreeze & restore its functionality. Also, your Contacts, Messages, and other sensitive files have successfully been deleted from your phone."
+#define string_text_invalidpassword 	"Incorrect PIN"
+#define string_text_unsubscribe			"Vault Uninstalled"

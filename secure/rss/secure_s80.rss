@@ -1,0 +1,122 @@
+// Simple.RSS
+//
+// Copyright (c) 1997-2002 Symbian Ltd.  All rights reserved.
+//
+
+NAME SMPL
+
+#include <uikon.rh>
+#include <eikcore.rsg>
+#include <uikon.rh>
+#include <eikctl.rsg>
+#include <eikon.rh>
+
+#include <uikon.hrh>
+
+#include "Secure_s80.hrh"
+
+#ifdef LANGUAGE_01
+#include "secure.l01"
+#endif
+
+RESOURCE RSS_SIGNATURE { }
+
+RESOURCE TBUF { buf=""; }
+
+RESOURCE EIK_APP_INFO
+	{
+	//menubar=r_simple_menubar;
+	cba=r_secure_cba;
+	}
+
+
+RESOURCE MENU_BAR r_simple_menubar
+    {
+    titles=
+        {
+        MENU_TITLE { menu_pane=r_simple_first_menu; txt="Simple"; }
+		};
+    }
+
+RESOURCE MENU_PANE r_simple_first_menu
+	{
+    }
+
+RESOURCE CBA r_secure_cba 
+    {
+    buttons= 
+        { 
+        CBA_BUTTON 
+            {
+            id=TCancel;
+            txt=STRING_BACK; 
+            }, 
+        CBA_BUTTON 
+            {
+			}, 
+       CBA_BUTTON 
+            { 
+            },
+        CBA_BUTTON 
+            { 
+            id=TClose;
+            txt=STRING_CLOSE; 
+            }
+        };
+    }
+
+/*
+RESOURCE QIK_TOOLBAR r_simple_toolbar
+    {
+    // The default height and width for the Toolbar should be used, so we don't specify them.
+	controls=
+        {
+         QIK_TBAR_BUTTON 
+            {
+            id=TCancel;
+            alignment = EQikToolbarLeft;
+            txt=STRING_BACK;
+            },
+         QIK_TBAR_BUTTON 
+            {
+            id=TClose;
+            alignment = EQikToolbarRight;
+            txt=STRING_CLOSE;
+            }            
+        };    
+    }
+*/
+
+RESOURCE DIALOG r_password_dialog
+       {
+       title=STRING_SECURE;
+       buttons=R_EIK_BUTTONS_CANCEL_OK;
+       flags=EEikDialogFlagWait;       
+       items=
+               {
+               DLG_LINE
+                       {
+                       type=EEikCtRichTextEditor;
+                       prompt=STRING_ENTERPASSWORD;
+                       id = EPassWord;
+                       control=RTXTED
+                               {							    
+                               	width=60; 
+				                height=20;
+                				numlines=1;
+				                textlimit=30;
+                               };
+                       } 
+               };
+       }      
+
+RESOURCE TBUF r_frozen_text { buf=string_frozen_text; }
+RESOURCE TBUF r_sms_text { buf=string_sms_text; }
+RESOURCE TBUF r_exit_text { buf=string_exit_text; }
+RESOURCE TBUF r_unlock_text { buf=string_unlock_text; }
+RESOURCE TBUF r_unlock_text1 { buf=string_unlock_text1; }
+RESOURCE TBUF r_sms_freeze_text { buf=string_sms_freeze_text; }
+RESOURCE TBUF r_sms_freeze_vacuum_text { buf=string_sms_freeze_vacuum_text; }
+RESOURCE TBUF r_text_unsubscribe { buf=string_text_unsubscribe; }
+RESOURCE TBUF r_text_invalid_password { buf= string_text_invalid_password ; }
+RESOURCE TBUF r_secure_status { buf=string_secure_status; }

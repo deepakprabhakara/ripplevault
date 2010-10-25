@@ -1,0 +1,110 @@
+/*
+* ============================================================================
+*  Name     : RippleVault.mmp
+*  Part of  : RippleVault
+*  Created  : 15.10.2005 by Ezhil
+*  Description:
+*     Project definition file
+*  Copyright: PurpleAce
+* ============================================================================
+*/
+
+TARGET		ripplevault.app 
+TARGETTYPE	app
+UID		0x100039CE 0x102032D0
+TARGETPATH	\system\apps\ripplevault
+
+MACRO   __UIQ__
+MACRO   __S80__
+MACRO			__LOGME__
+
+LANG		01
+
+SOURCEPATH	..\src
+SOURCE		RippleVaultApplication.cpp 
+SOURCE		RippleVaultDocument.cpp 
+SOURCE		RippleVaultAppUi.cpp
+SOURCE		RippleVault.cpp
+
+SOURCEPATH	..\src\s80
+SOURCE		RippleVaultUtils.cpp
+SOURCE		UnRegisterView.cpp 
+//SOURCE		RegisterView.cpp
+//SOURCE		MainScreenView.cpp 
+//SOURCE	    MainSubScreenView.cpp
+SOURCE		SmsListView.cpp
+SOURCE		MessageTextListBox.cpp
+SOURCE		MessageListBox.cpp
+SOURCE		PhototListView.cpp
+SOURCE		PhotoScreenListBox.cpp
+SOURCE	    StatusScreenView.cpp
+SOURCE		CustomListBox.cpp
+SOURCE		ContactsView.cpp
+SOURCE		ContactsScreenView.cpp 
+SOURCE	    ContactsSubScreenView.cpp
+SOURCE	    ReadContactsAO.cpp
+SOURCE		VideoListView.cpp
+SOURCE		VideoScreenListBox.cpp
+SOURCE		Imsi.cpp 
+SOURCE		CheckNetwork.cpp 
+
+SOURCEPATH        ..\src\publish
+SOURCE			  PhotosEngine.cpp
+SOURCE			  VideosEngine.cpp
+SOURCE			  socketsenginewriter.cpp
+SOURCE		      timeouttimer.cpp
+SOURCE			  DBEngine.cpp
+SOURCE		      PhotosTimer.cpp
+SOURCE	          phototimeouttimer.cpp
+
+SOURCEPATH        ..\src\sms
+SOURCE			  SmsFile.cpp
+SOURCE		      SmsSimEngine.cpp
+SOURCE		      SmsBackupTimer.cpp
+SOURCE		      ReadSmsAO.cpp
+SOURCE		      WriteSmsAO.cpp
+//SOURCE		      SmsBackupAO.cpp
+
+SOURCEPATH        ..\src\billing
+SOURCE		      BillingEngine.cpp
+
+SOURCEPATH        ..\src\contacts\conn
+SOURCE			  contactssocketsenginewriter.cpp
+
+SOURCEPATH        ..\src\contacts\engine
+SOURCE            ContactsHandler.cpp
+SOURCE            RecordContactDB.cpp
+SOURCE            CopyContactsAO.cpp
+SOURCE		  	  ChangesContactsAO.cpp
+SOURCE			  UpdateContactsAO.cpp
+SOURCE            SmsEngine.cpp
+SOURCE			  ContactsDBEngine.cpp
+SOURCE		      ContactsTimer.cpp
+
+SOURCEPATH        ..\src\contacts\utils
+SOURCE            EventQueue.cpp
+SOURCE            List.cpp
+
+SOURCEPATH  ..\rss
+RESOURCE	RippleVault_series80.rss
+
+USERINCLUDE		..\inc
+USERINCLUDE		..\inc\s80
+USERINCLUDE     ..\inc\contacts
+USERINCLUDE     ..\inc\publish
+USERINCLUDE     ..\inc\sms
+USERINCLUDE		..\images
+
+SYSTEMINCLUDE	\epoc32\include
+SYSTEMINCLUDE	\epoc32\include\libc
+
+LIBRARY		euser.lib apparc.lib cone.lib eikcore.lib cknctl.lib egul.lib
+LIBRARY		fbscli.lib eikctl.lib eikdlg.lib eikcoctl.lib ckncore.lib bafl.lib
+LIBRARY		ws32.lib skin.lib estlib.lib MediaClientImage.lib efsrv.lib
+LIBRARY		gdi.lib apgrfx.lib plpvariant.lib esock.lib insock.lib GenConn.lib
+LIBRARY		commdb.lib nifman.lib ckndlg.lib msgs.lib smcm.lib etext.lib
+LIBRARY		cntmodel.lib Etel3rdParty.lib
+LIBRARY		edbms.lib estor.lib
+LIBRARY 	charconv.lib gsmu.lib mtur.lib send.lib muiu.lib smsu.lib
+
+//AIF Ripplevault.aif ..\aif_s80 Ripplevaultaif.rss c8 context_pane_icon.bmp context_pane_icon_mask.bmp list_icon.bmp list_icon_mask.bmp

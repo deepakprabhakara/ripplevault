@@ -1,0 +1,63 @@
+; ripplevault.pkg
+;
+
+;Language - standard language definitions
+&EN
+
+; standard SIS file header
+#{"Easy Vault"},(0x102032D0),3,43,0,TYPE=SISAPP
+
+;Supports Series 60 v 0.9
+(0x101F6F88), 0, 0, 0, {"Series60ProductID"}
+
+
+;
+".\secure.app"-"c:\system\secure\secure.app"
+".\secure.r01"-"c:\system\secure\secure.r01"
+
+".\dns.txt"-"!:\system\apps\ripplevault\dns.txt"
+".\config.txt"-"!:\system\apps\ripplevault\config.txt"
+;
+".\images.mbm"-"!:\system\apps\ripplevault\images.mbm"
+".\icons.mbm"-"!:\system\apps\ripplevault\icons.mbm"
+".\subicons.mbm"-"!:\system\apps\ripplevault\subicons.mbm"
+".\logo.mbm"-"!:\system\apps\ripplevault\logo.mbm"
+".\empty.mbm"-"!:\system\apps\ripplevault\empty.mbm"
+".\video.mbm"-"!:\system\apps\ripplevault\video.mbm"
+".\mobile.mbm"-"!:\system\apps\ripplevault\mobile.mbm"
+".\marking.mbm"-"!:\system\apps\ripplevault\marking.mbm"
+".\settings.mbm"-"!:\system\apps\ripplevault\settings.mbm"
+".\phototick.mbm"-"!:\system\apps\ripplevault\phototick.mbm"
+".\tick.mbm"-"!:\system\apps\ripplevault\tick.mbm"
+".\sms.mbm"-"!:\system\apps\ripplevault\sms.mbm"
+".\rippleimage.mbm"-"!:\system\apps\ripplevault\rippleimage.mbm"
+".\sync.mbm"-"!:\system\apps\ripplevault\sync.mbm"
+".\statustick.mbm"-"!:\system\apps\ripplevault\statustick.mbm"
+".\statustick1.mbm"-"!:\system\apps\ripplevault\statustick1.mbm"
+".\contactsetup.dat"-"!:\system\apps\ripplevault\contactsetup.dat"
+".\resume.dat"-"!:\system\apps\ripplevault\resume.dat"
+".\initsms.dat"-"!:\system\apps\ripplevault\initsms.dat"
+
+".\ripplevault.aif"-"!:\system\apps\ripplevault\ripplevault.aif"
+".\ripplevault.r01"-"!:\system\apps\ripplevault\ripplevault.r01"
+;".\ripplevault.r31"-"!:\system\apps\ripplevault\ripplevault.r31"
+".\ripplevault.app"-"!:\system\apps\ripplevault\ripplevault.app"
+;
+
+;".\vault.exe"-"!:\system\apps\ripplevault\vault.exe",FR,RR,RW
+
+;".\secure.r31"-"c:\system\secure\secure.r31"
+".\secure.aif"-"c:\system\secure\secure.aif"
+".\dog_bark.amr"-"c:\system\secure\dog_bark.amr"
+".\secure.txt"-"c:\system\secure\secure.txt"
+".\securelogo.mbm"-"c:\system\secure\logo.mbm"
+".\unsubscribe.exe"-"c:\system\secure\unsubscribe.exe"
+".\imsi.txt"-"c:\system\secure\imsi.txt"
+".\starter.exe"-"c:\system\secure\starter.exe"
+
+""-"c:\system\secure\imsi.txt",FN
+""-"c:\system\secure\lock.dat",FN
+""-"c:\system\secure\log.txt",FN
+""-"c:\system\secure\sender.txt",FN
+".\vl_autostart.mdl"-"c:\system\recogs\vl_autostart.mdl"
+""-"c:\system\secure\SecureStop.dat",FN

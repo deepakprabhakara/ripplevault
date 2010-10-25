@@ -1,0 +1,3 @@
+autolock=1
+fpn=+919886425980
+text=Please give this phone to +919886425980

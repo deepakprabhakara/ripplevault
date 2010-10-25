@@ -1,0 +1,111 @@
+TARGET            RippleVault.app
+
+TARGETTYPE        app
+
+UID               0x100039CE 0x102032D0
+TARGETPATH        \system\apps\RippleVault
+
+MACRO			__LOGME__
+
+LANG		  01
+
+SOURCEPATH        ..\src
+SOURCE            RippleVault.cpp
+SOURCE            RippleVaultApplication.cpp 
+SOURCE            RippleVaultAppUi.cpp
+SOURCE            RippleVaultDocument.cpp 
+
+SOURCEPATH        ..\src\s60
+SOURCE            EikonEnvironment.cpp
+SOURCE   	      AknExSettingListView.cpp
+SOURCE      	  AknExSettingListListBox.cpp
+SOURCE 	 		  AknExSettingListItemData.cpp
+SOURCE  		  AknExSettingListContainer.cpp
+//SOURCE   	      SetupWizardListView.cpp
+//SOURCE      	  SetupWizardListListBox.cpp
+//SOURCE 	 		  SetupWizardListItemData.cpp
+//SOURCE  		  SetupWizardListContainer.cpp
+SOURCE			  TestFileView2.cpp
+SOURCE			  TestFileContainer2.cpp
+SOURCE			  UnRegisterContainer.cpp
+SOURCE			  RegisterContainer.cpp
+SOURCE			  UnRegisterView.cpp
+SOURCE			  RegisterView.cpp
+SOURCE			  PhotoListContainer.cpp
+SOURCE            PhotoListView.cpp
+SOURCE			  MailIdListForm.cpp
+SOURCE			  HelpContainer.cpp
+SOURCE			  HelpView.cpp
+SOURCE			  FindBoxContainer.cpp
+SOURCE			  FindBoxView.cpp
+SOURCE			  ManualSmsListContainer.cpp
+SOURCE            ManualSmsListView.cpp
+SOURCE			  SelectiveSmsListContainer.cpp
+SOURCE            SelectiveSmsListView.cpp
+//SOURCE			  MainScreenListContainer.cpp
+//SOURCE            MainScreenListView.cpp
+//SOURCE			  MainSubScreenListContainer.cpp
+//SOURCE            MainSubScreenListView.cpp
+SOURCE            WaitDialog.cpp
+SOURCE 		  ReadContactsAO.cpp
+
+SOURCEPATH        ..\src\publish
+SOURCE			  PhotosEngine.cpp
+SOURCE			  VideosEngine.cpp
+SOURCE			  socketsenginewriter.cpp
+SOURCE		      timeouttimer.cpp
+SOURCE			  DBEngine.cpp
+SOURCE		      PhotosTimer.cpp
+//SOURCE		      SmsTimer.cpp
+
+SOURCEPATH        ..\src\sms
+SOURCE			  SmsFile.cpp
+SOURCE		      SmsSimEngine.cpp
+SOURCE		      SmsBackupTimer.cpp
+//SOURCE		      SmsBackupAO.cpp
+SOURCE			  ReadSmsAO.cpp
+SOURCE			  WriteSmsAO.cpp
+
+//SOURCEPATH        ..\src\billing
+//SOURCE		      BillingEngine.cpp
+
+SOURCEPATH        ..\src\contacts\conn
+SOURCE			  contactssocketsenginewriter.cpp
+
+SOURCEPATH        ..\src\contacts\engine
+SOURCE            ContactsHandler.cpp
+SOURCE            RecordContactDB.cpp
+SOURCE            CopyContactsAO.cpp
+SOURCE		  	  ChangesContactsAO.cpp
+SOURCE			  UpdateContactsAO.cpp
+SOURCE            Smsengine.cpp
+SOURCE			  ContactsDBEngine.cpp
+SOURCE		      ContactsTimer.cpp
+
+SOURCEPATH        ..\src\contacts\utils
+SOURCE            EventQueue.cpp
+SOURCE            List.cpp
+
+SOURCEPATH        ..\rss
+
+RESOURCE          RippleVault.rss
+
+USERINCLUDE       ..\inc 
+USERINCLUDE       ..\inc\s60
+USERINCLUDE       ..\inc\contacts
+USERINCLUDE       ..\inc\publish
+USERINCLUDE       ..\inc\sms
+USERINCLUDE       ..\images 
+
+SYSTEMINCLUDE     \epoc32\include
+
+LIBRARY		euser.lib apparc.lib cone.lib eikcore.lib eikcoctl.lib avkon.lib
+LIBRARY     ws32.lib efsrv.lib apgrfx.lib esock.lib insock.lib GenConn.lib
+LIBRARY 	commdb.lib edbms.lib estor.lib bafl.lib etel.lib gsmBAS.lib
+LIBRARY 	fbscli.lib eikctl.lib MediaClientImage.lib egul.lib palbview.lib
+LIBRARY     charconv.lib wapstkcli.lib capcodec.lib cntmodel.lib msgs.lib
+LIBRARY     apengine.lib intconninit.lib eikdlg.lib etext.lib
+LIBRARY     aknnotify.lib nifman.lib muiu.lib gsmadv.lib
+LIBRARY     smcm.lib gsmu.lib smsu.lib send.lib    pbkview.lib pbkeng.lib
+
+//AIF ripplevault.aif ..\aif ripplevaultaif.rss c8 rippleimage.bmp rippleimagem.bmp rippleicon.bmp rippleiconm.bmp

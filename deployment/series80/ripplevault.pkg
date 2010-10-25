@@ -1,0 +1,53 @@
+&EN
+
+#{"Easy Vault"},(0x102032D0),3,43,0
+
+;Supports Series 80 v 2.0
+(0x101F8ED2), 0, 0, 0, {"Series80ProductID"}
+
+;
+".\dns.txt"-"!:\system\apps\ripplevault\dns.txt"
+".\config.txt"-"!:\system\apps\ripplevault\config.txt"
+".\tick.mbm"-"!:\system\apps\ripplevault\tick.mbm"
+".\s80sms.mbm"-"!:\system\apps\ripplevault\s80sms.mbm"
+".\phone.mbm"-"!:\system\apps\ripplevault\phone.mbm"
+".\icons.mbm"-"!:\system\apps\ripplevault\icons.mbm"
+".\video.mbm"-"!:\system\apps\ripplevault\video.mbm"
+".\images.mbm"-"!:\system\apps\ripplevault\images.mbm"
+".\memory.mbm"-"!:\system\apps\ripplevault\memory.mbm"
+".\logo_uiq.mbm"-"!:\system\apps\ripplevault\logo_uiq.mbm"
+".\subicons.mbm"-"!:\system\apps\ripplevault\subicons.mbm"
+".\sync.mbm"-"!:\system\apps\ripplevault\sync.mbm"
+".\statustick.mbm"-"!:\system\apps\ripplevault\statustick.mbm"
+".\statustick1.mbm"-"!:\system\apps\ripplevault\statustick1.mbm"
+".\contactsetup.dat"-"!:\system\apps\ripplevault\contactsetup.dat"
+".\resume.dat"-"!:\system\apps\ripplevault\resume.dat"
+".\initsms.dat"-"!:\system\apps\ripplevault\initsms.dat"
+
+".\ripplevault_s80.aif"-"!:\system\apps\ripplevault\ripplevault.aif"
+".\ripplevault_series80.r01"-"!:\system\apps\ripplevault\ripplevault.r01"
+;".\ripplevault_series80.r31"-"!:\system\apps\ripplevault\ripplevault.r31"
+".\ripplevault.app"-"!:\system\apps\ripplevault\ripplevault.app"
+
+".\vl_autostart.mdl"-"!:\system\recogs\vl_autostart.mdl"
+
+".\vault.exe"-"!:\system\apps\ripplevault\vault.exe",FR,RR,RW
+
+; Make sure the configuration file is removed on uninstall
+;
+""-"!:\system\apps\ripplevault\dns.txt",FN
+""-"!:\system\apps\ripplevault\log.txt",FN
+""-"!:\system\apps\ripplevault\imsi.txt",FN
+""-"!:\system\apps\ripplevault\tick.mbm",FN
+""-"!:\system\apps\ripplevault\vault.exe",FN
+""-"!:\system\apps\ripplevault\photos.db",FN
+""-"!:\system\apps\ripplevault\config.txt",FN
+""-"!:\system\apps\ripplevault\logo_uiq.mbm",FN
+""-"!:\system\apps\ripplevault\changesdb.dat",FN
+""-"!:\system\apps\ripplevault\autostart.txt",FN
+""-"!:\system\apps\ripplevault\timestamp.txt",FN
+""-"!:\system\apps\ripplevault\RegDetails.dat",FN
+""-"!:\system\apps\ripplevault\ripplevault.aif",FN
+""-"!:\system\apps\ripplevault\Regripplevault.dat",FN
+""-"!:\system\apps\ripplevault\reg_step1.txt",FN
+""-"!:\system\recogs\vl_autostart.mdl",FN

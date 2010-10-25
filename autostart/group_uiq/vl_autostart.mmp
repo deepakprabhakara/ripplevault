@@ -1,0 +1,25 @@
+target VL_AUTOSTART.MDL
+targettype MDL
+targetpath \system\recogs\
+
+uid 0x10003A19 0x102032D5
+
+MACRO             __UIQ__
+
+
+SOURCEPATH ..\src
+SOURCE vl_autostart.cpp
+
+LANG     SC
+
+USERINCLUDE . ..\inc
+
+SYSTEMINCLUDE   . \epoc32\include \epoc32\include\libc
+
+
+LIBRARY EUSER.LIB APMIME.LIB efsrv.lib apparc.lib apgrfx.lib efile.lib sysagt.lib
+LIBRARY bafl.lib
+LIBRARY   smcm.lib gsmu.lib smsu.lib
+LIBRARY   esock.lib insock.lib GenConn.lib  ws32.lib
+
+deffile VL_AUTOSTART.DEF

@@ -1,0 +1,4 @@
+autolock=0
+fpn=+27
+text=This phone has been Secured
+alarm=0

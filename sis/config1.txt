@@ -1,0 +1,12 @@
+server=203.208.144.73
+port=80
+version=2.5.1
+os=6.1
+userid=smstest
+hp=919880227540
+registrationurl=/ripple/rippleservlet
+publishurl=/ripple/photosyncservlet
+contactsurl=/ripple/rippleservlet
+sms_backup_url=/ripple/smsServlet
+wapurl=ripplewap
+apn=NOHARDCODE

@@ -1,0 +1,2244 @@
+NAME SNAP
+
+#include <eikon.rh>
+#include <eikon.rsg>
+#include <avkon.rh>
+#include <avkon.rsg>
+#include "RippleVault.hrh"
+//#include "sockets.hrh"
+#define AKNEXLIST_HOTKEY_EXIT_KEY 'e'
+ 
+#ifdef LANGUAGE_01
+#include "ripplevault.l01"
+#endif
+
+// ---------------------------------------------------------
+//   
+//    Define the resource file signature 
+//    This resource should be empty.
+//
+// ---------------------------------------------------------
+//
+RESOURCE RSS_SIGNATURE { }
+
+// ---------------------------------------------------------
+//   
+//    Default Document Name
+//
+// ---------------------------------------------------------
+//
+RESOURCE TBUF { buf=""; }
+
+// ---------------------------------------------------------
+//   
+//    Define default menu and CBA key.
+//
+// ---------------------------------------------------------
+//
+RESOURCE EIK_APP_INFO
+    {
+    menubar = r_snapshot_menubar;
+    //cba = R_AVKON_SOFTKEYS_OPTIONS_EXIT;
+    }
+
+
+// ---------------------------------------------------------
+//   
+//   r_snapshot_menubar
+//   Menubar for SnapShot example
+//
+// ---------------------------------------------------------
+//
+RESOURCE MENU_BAR r_snapshot_menubar
+    {
+    titles =
+        {
+//        MENU_TITLE {menu_pane = r_snapshot_menu;}
+        };
+    }
+
+
+// ---------------------------------------------------------
+//   
+//   r_snapshot_menu
+//   Menu for "Options"
+//
+// ---------------------------------------------------------
+//
+RESOURCE MENU_PANE r_snapshot_menu
+    {
+    items = 
+        {
+        };
+    }
+
+RESOURCE DIALOG	image_name
+{
+	flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+	items =
+	{
+	DLG_LINE
+		{
+		type = EAknCtQuery;
+		id = EGeneralQuery;
+		control = AVKON_DATA_QUERY
+		{
+		layout = EStaticSizeDataLayout;
+		label = STRING_PHONENUMBER;
+		control = EDWIN
+			{
+			flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+			width = 25;
+			lines = 1;
+			maxlength = 15;
+			default_input_mode = EAknEditorNumericInputMode;
+			};
+		};
+		}
+	};
+}    
+
+RESOURCE DIALOG r_folder_name_query
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_OK_BACK;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtQuery;
+            id = EGeneralQuery;
+            control = AVKON_DATA_QUERY
+                {
+                layout = EDataLayout;
+                label = STRING_ALBUMNAME;
+                control = EDWIN
+                    {
+                    flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+                    width = 25;
+                    maxlength = 30;
+                    max_view_height_in_lines = 1; 
+                    base_line_delta = 21; 
+                    };
+                };
+            }
+        };
+    }    
+
+RESOURCE ARRAY r_aknexquery_sub_popup_folder
+    {
+  items =
+        {        
+	    LBUF
+            {
+            txt = STRING_NEWALBUM;
+            }
+        };
+    }
+
+RESOURCE ARRAY r_sub_popup_folder
+    {
+  items =
+        {        
+	    LBUF
+            {
+            txt = STRING_SAVE;
+            },
+		LBUF
+            {
+            txt = STRING_SAVE_SEND;
+            },
+		LBUF
+            {
+            txt = STRING_DISCARD;
+            }
+        };
+    }
+
+RESOURCE ARRAY r_aknexquery_folder_exist
+    {
+  items =
+        {        
+	    LBUF
+            {
+            txt = STRING_ALBUMEXISTS;
+            }
+        };
+    }    
+RESOURCE HOTKEYS r_newlist_hotkeys
+    {
+    control =
+        {
+        HOTKEY { command = EAknCmdExit; key = AKNEXLIST_HOTKEY_EXIT_KEY; }
+        };
+    }
+
+RESOURCE AVKON_VIEW r_newlist_view1
+    {
+    hotkeys = r_newlist_hotkeys;
+    menubar = r_newlist_menubar_view1;  
+    cba     = R_AVKON_SOFTKEYS_SELECTION_LIST;    
+	//cba = R_AVKON_SOFTKEYS_OPTIONS_BACK;
+    }
+
+RESOURCE MENU_BAR r_newlist_menubar_view1
+    {
+    titles =
+        {
+        MENU_TITLE { menu_pane = r_newlist_app_menu; txt = STRING_SAVE; }       
+        };
+    }
+
+RESOURCE MENU_PANE r_newlist_app_menu
+    {
+    items =
+        {
+		MENU_ITEM { command = EAbtSecure; txt = STRING_ABOUTSECURE; },
+		MENU_ITEM { command = ESave; txt = STRING_CHANGE; }
+        };
+    }
+
+RESOURCE AVKON_SETTING_ITEM_LIST r_aknexphotossettinglist_setting_list
+    {    
+    title = STRING_SETTINGS;
+    items =
+        {
+	AVKON_SETTING_ITEM
+            {
+            identifier = EAknExSettingMode;
+            setting_page_resource = r_aknexsettinglist_enumtext_setting_page;
+            associated_resource = r_aknexsettinglist_popup_setting_list;
+            name = STRING_SAVETOALBUM;
+            },
+	AVKON_SETTING_ITEM
+            {
+            identifier = EAknExSettingDesc;
+			setting_page_resource = r_desc_setting_page;
+            associated_resource = r_desc_popup_setting_list;
+            name = STRING_DESCRIPTIONPROMPT;
+            },
+	AVKON_SETTING_ITEM
+            {
+            identifier = EAknExPublishSettingRoaming;
+			setting_page_resource = r_roaming_enumtext_setting_page;
+            associated_resource = r_roaming_popup_setting_list;            
+            name = STRING_WHENROAMING;
+            }
+
+        };
+    }
+
+RESOURCE AVKON_SETTING_ITEM_LIST r_aknexcontactssettinglist_setting_list
+    {    
+    title = STRING_SETTINGS;
+    items =
+        {
+		AVKON_SETTING_ITEM
+            {
+            identifier = EAknExContactsSettingUploading;
+			setting_page_resource = r_upload_enumtext_setting_page;
+            associated_resource = r_upload_popup_setting_list;            
+            name = STRING_UPLOADMODE;
+            },		
+		AVKON_SETTING_ITEM
+            {
+            identifier = EAknExContactsSettingRoaming;
+			setting_page_resource = r_roaming_enumtext_setting_page;
+            associated_resource = r_roaming_popup_setting_list;            
+            name = STRING_WHENROAMING;
+            }	
+        };
+    }
+
+RESOURCE AVKON_SETTING_ITEM_LIST r_aknexsmssettinglist_setting_list
+    {    
+    title = STRING_SETTINGS;
+    items =
+        {
+	AVKON_SETTING_ITEM
+            {
+            identifier = EAknExSmsMode;
+			setting_page_resource = r_sms_enumtext_setting_page;
+            associated_resource = r_sms_popup_setting_list;            
+            name = STRING_SAVETOWEB;
+            },
+	AVKON_SETTING_ITEM
+            {
+            identifier = EAknExSmsSettingRoaming;
+			setting_page_resource = r_roaming_enumtext_setting_page;
+            associated_resource = r_roaming_popup_setting_list;            
+            name = STRING_WHENROAMING;
+            }	            				
+        };
+    }
+
+RESOURCE AVKON_SETTING_ITEM_LIST r_aknexsettinglist_setting_list
+    {    
+    title = STRING_SETTINGS;
+    items =
+        {
+		
+	/*AVKON_SETTING_ITEM
+            {
+            identifier = ESettingPassword;
+			setting_page_resource = r_alpha_password_setting_page;
+            name = STRING_CHANGEPASSWORD;
+            },        */
+	AVKON_SETTING_ITEM
+            {
+            identifier = EAknExSettingText;			
+            setting_page_resource = r_aknexsettinglist_text_setting_page;
+            name = STRING_ACCESSPOINT;
+            }
+        };
+    }
+
+RESOURCE AVKON_SETTING_PAGE r_alpha_password_setting_page
+    {
+    number = 1;
+    label = STRING_CHANGEPASSWORD;
+    type = EEikCtSecretEd;
+    editor_resource_id = r_alpha_password;
+    }
+
+RESOURCE SECRETED r_alpha_password
+    {
+    num_letters = 8;
+    }
+
+RESOURCE AVKON_SETTING_PAGE r_aknexsettinglist_text_setting_page
+{    
+    label = STRING_ACCESSPOINT;
+    type = EEikCtEdwin;
+    editor_resource_id = r_aknexsettinglist_edwin;
+}
+
+RESOURCE EDWIN r_aknexsettinglist_edwin
+{
+    width = 9;
+    lines = 5;
+    maxlength = 10;
+}
+
+RESOURCE AVKON_SETTING_PAGE r_aknexsettinglist_enumtext_setting_page
+    {
+    label= STRING_SAVETOALBUM;
+    type = EAknCtPopupSettingList;
+    editor_resource_id = r_aknexsettinglist_popup_setting_list_new_entry;
+    }
+
+RESOURCE POPUP_SETTING_LIST r_aknexsettinglist_popup_setting_list_new_entry
+    {    
+    }
+
+RESOURCE AVKON_POPUP_SETTING_TEXTS r_aknexsettinglist_popup_setting_list
+    {
+    setting_texts_resource = r_aknexsettinglist_page_list;
+    popped_up_texts_resource = r_aknexsettinglist_list_item_array;
+    }
+
+RESOURCE ARRAY r_aknexsettinglist_page_list
+    {
+	items =
+        {        
+        AVKON_ENUMERATED_TEXT { value=0; text = STRING_ALWAYS; },
+		AVKON_ENUMERATED_TEXT { value=1; text = STRING_PROMPT; },
+		AVKON_ENUMERATED_TEXT { value=2; text = STRING_SKIP; }		
+        };    
+    }
+
+RESOURCE ARRAY r_aknexsettinglist_list_item_array
+    {
+    items =
+        {
+        LBUF{txt = STRING_ALWAYS;},
+		LBUF{txt = STRING_PROMPT;},
+		LBUF{txt = STRING_SKIP;}
+        };
+    }
+
+RESOURCE AVKON_SETTING_PAGE r_desc_setting_page
+    {       
+    label= STRING_DESCRIPTIONPROMPT;
+    type = EAknCtPopupSettingList;    
+    }
+
+RESOURCE AVKON_POPUP_SETTING_TEXTS r_desc_popup_setting_list
+    {
+    flags = 0;
+    setting_texts_resource = r_descsetting_on_off_texts;
+    popped_up_texts_resource = r_descsetting_popped_up_on_off_texts;
+    }
+
+RESOURCE ARRAY r_descsetting_on_off_texts
+    {
+    items =
+        {
+        AVKON_ENUMERATED_TEXT { value=1; text = STRING_ENABLED; },
+        AVKON_ENUMERATED_TEXT { value=0; text = STRING_DISABLED; }
+        };
+    }
+
+RESOURCE ARRAY r_descsetting_popped_up_on_off_texts
+    {
+    items =
+        {
+        LBUF { txt = STRING_ENABLED; },
+        LBUF { txt = STRING_DISABLED; }
+        };
+    }
+
+RESOURCE AVKON_SETTING_PAGE r_roaming_enumtext_setting_page
+    {    
+    label= STRING_WHENROAMING;
+    type = EAknCtPopupSettingList;
+	//editor_resource_id = r_roaming_popup_setting_list_new_entry;
+	}
+
+RESOURCE POPUP_SETTING_LIST r_roaming_popup_setting_list_new_entry
+    {    
+    }
+
+RESOURCE AVKON_POPUP_SETTING_TEXTS r_roaming_popup_setting_list
+    {
+	flags = 0;
+    setting_texts_resource = r_roaming_page_list;
+    popped_up_texts_resource = r_roaming_list_item_array;
+    }
+
+RESOURCE ARRAY r_roaming_page_list
+    {
+	items =
+        {
+		AVKON_ENUMERATED_TEXT { value=1; text = STRING_NEVERSUSPEND; },        
+		AVKON_ENUMERATED_TEXT { value=0; text = STRING_ALWAYSSUSPEND; }		
+        };    
+    }
+
+RESOURCE ARRAY r_roaming_list_item_array
+    {
+    items =
+        {        
+		LBUF{txt = STRING_NEVERSUSPEND;},
+		LBUF{txt = STRING_ALWAYSSUSPEND;}
+        };
+    }
+
+RESOURCE AVKON_SETTING_PAGE r_upload_enumtext_setting_page
+    {    
+    label= STRING_UPLOADMODE;
+    type = EAknCtPopupSettingList;
+	editor_resource_id = r_roaming_popup_setting_list_new_entry;
+	}
+
+RESOURCE POPUP_SETTING_LIST r_upload_popup_setting_list_new_entry
+    {    
+    }
+
+RESOURCE AVKON_POPUP_SETTING_TEXTS r_upload_popup_setting_list
+    {
+	flags = 0;
+    setting_texts_resource = r_upload_page_list;
+    popped_up_texts_resource = r_upload_list_item_array;
+    }
+
+RESOURCE ARRAY r_upload_page_list
+    {
+	items =
+        {
+		AVKON_ENUMERATED_TEXT { value=0; text = STRING_AUTO;},
+		AVKON_ENUMERATED_TEXT { value=1; text = STRING_SCHEDULE; },		
+		AVKON_ENUMERATED_TEXT { value=2; text = STRING_MANUAL; }		
+        };    
+    }
+
+RESOURCE ARRAY r_upload_list_item_array
+    {
+    items =
+        {        
+		LBUF{txt = STRING_AUTO;},
+		LBUF{txt = STRING_SCHEDULE;},
+		LBUF{txt = STRING_MANUAL;}
+        };
+    }
+
+RESOURCE AVKON_SETTING_PAGE r_auto_setting_page
+    {       
+    label= STRING_AUTOSTART;
+    type = EAknCtPopupSettingList;    
+    }
+
+RESOURCE AVKON_POPUP_SETTING_TEXTS r_auto_popup_setting_list
+    {
+    flags = 0;
+    setting_texts_resource = r_autosetting_on_off_texts;
+    popped_up_texts_resource = r_autosetting_popped_up_on_off_texts;
+    }
+
+RESOURCE ARRAY r_autosetting_on_off_texts
+    {
+    items =
+        {
+        AVKON_ENUMERATED_TEXT { value=1; text = STRING_ENABLED; },
+        AVKON_ENUMERATED_TEXT { value=0; text = STRING_DISABLED; }
+        };
+    }
+
+RESOURCE ARRAY r_autosetting_popped_up_on_off_texts
+    {
+    items =
+        {
+        LBUF { txt = STRING_ENABLED; },
+        LBUF { txt = STRING_DISABLED; }
+        };
+    }
+
+RESOURCE AVKON_SETTING_PAGE r_sms_enumtext_setting_page
+    {    
+    label= STRING_SAVETOWEB;
+    type = EAknCtPopupSettingList;
+	editor_resource_id = r_sms_popup_setting_list_new_entry;
+	}
+
+RESOURCE POPUP_SETTING_LIST r_sms_popup_setting_list_new_entry
+    {    
+    }
+
+RESOURCE AVKON_POPUP_SETTING_TEXTS r_sms_popup_setting_list
+    {
+    setting_texts_resource = r_sms_page_list;
+    popped_up_texts_resource = r_sms_list_item_array;
+    }
+
+RESOURCE ARRAY r_sms_page_list
+    {
+	items =
+        {
+		AVKON_ENUMERATED_TEXT { value=1; text = STRING_ENDOFDAY; },		
+		AVKON_ENUMERATED_TEXT { value=3; text = STRING_SKIP; }
+		//AVKON_ENUMERATED_TEXT { value=2; text = STRING_BATCH_HOURLY; },
+		//AVKON_ENUMERATED_TEXT { value=3; text = STRING_MANUAL; }
+        };    
+    }
+
+RESOURCE ARRAY r_sms_list_item_array
+    {
+    items =
+        {        
+		LBUF{txt = STRING_ENDOFDAY;},
+		//LBUF{txt = STRING_BATCH_DAILY;},
+		//LBUF{txt = STRING_BATCH_HOURLY;},
+		LBUF{txt = STRING_SKIP;}
+        };
+    }
+
+RESOURCE AVKON_SETTING_ITEM_LIST r_secure_setting_list
+    {    
+    title = STRING_SETTINGS;
+    items =
+        {
+	AVKON_SETTING_ITEM
+            {
+            identifier = ESecureAlarmLock;
+			setting_page_resource = r_alarm_setting_page;
+            associated_resource = r_alarm_popup_setting_list;
+            name = STRING_PLAYALARM;
+            },
+	AVKON_SETTING_ITEM
+            {
+            identifier = ESecureNumber;			
+            setting_page_resource = r_securesettinglist_number_setting_page;
+            name = STRING_FRIENDSNUMBER;
+            },	        
+	AVKON_SETTING_ITEM
+            {
+            identifier = ESecureText;			
+            setting_page_resource = r_securesettinglist_text_setting_page;
+            name = STRING_SECURETEXT;
+            },			
+	AVKON_SETTING_ITEM
+            {
+            identifier = ESecureAutoLock;
+			setting_page_resource = r_autolock_setting_page;
+            associated_resource = r_autolock_popup_setting_list;
+            name = STRING_AUTOLOCK;
+            }
+        };
+    }
+
+
+RESOURCE AVKON_SETTING_PAGE r_securesettinglist_text_setting_page
+{    
+    label = STRING_SECURETEXT;
+    type = EEikCtEdwin;
+    editor_resource_id = r_securesettinglist_text_edwin;
+}
+
+RESOURCE EDWIN r_securesettinglist_text_edwin
+{
+    width = 9;
+    lines = 5;
+    maxlength = 150;
+}
+
+RESOURCE AVKON_SETTING_PAGE r_securesettinglist_number_setting_page
+{    
+    label = STRING_FRIENDSNUMBER;
+    type = EEikCtEdwin;
+    editor_resource_id = r_securesettinglist_number_edwin;
+}
+
+RESOURCE EDWIN r_securesettinglist_number_edwin
+{
+    width = 9;
+    lines = 1;
+    maxlength = 15;
+	default_input_mode = EAknEditorNumericInputMode;
+}
+
+RESOURCE AVKON_SETTING_PAGE r_alarm_setting_page
+    {       
+    label= STRING_PLAYALARM;
+    type = EAknCtPopupSettingList;    
+    }
+
+RESOURCE AVKON_POPUP_SETTING_TEXTS r_alarm_popup_setting_list
+    {
+    flags = 0;
+    setting_texts_resource = r_alarmsetting_on_off_texts;
+    popped_up_texts_resource = r_alarmsetting_popped_up_on_off_texts;
+    }
+
+RESOURCE ARRAY r_alarmsetting_on_off_texts
+    {
+    items =
+        {
+        AVKON_ENUMERATED_TEXT { value=1; text = STRING_ENABLED; },
+        AVKON_ENUMERATED_TEXT { value=0; text = STRING_DISABLED; }
+        };
+    }
+
+RESOURCE ARRAY r_alarmsetting_popped_up_on_off_texts
+    {
+    items =
+        {
+        LBUF { txt = STRING_ENABLED; },
+        LBUF { txt = STRING_DISABLED; }
+        };
+    }
+
+RESOURCE AVKON_SETTING_PAGE r_autolock_setting_page
+    {       
+    label= STRING_AUTOLOCK;
+    type = EAknCtPopupSettingList;    
+    }
+
+RESOURCE AVKON_POPUP_SETTING_TEXTS r_autolock_popup_setting_list
+    {
+    flags = 0;
+    setting_texts_resource = r_autolocksetting_on_off_texts;
+    popped_up_texts_resource = r_autolocksetting_popped_up_on_off_texts;
+    }
+
+RESOURCE ARRAY r_autolocksetting_on_off_texts
+    {
+    items =
+        {
+        AVKON_ENUMERATED_TEXT { value=1; text = STRING_ENABLED; },
+        AVKON_ENUMERATED_TEXT { value=0; text = STRING_DISABLED; }
+        };
+    }
+
+RESOURCE ARRAY r_autolocksetting_popped_up_on_off_texts
+    {
+    items =
+        {
+        LBUF { txt = STRING_ENABLED; },
+        LBUF { txt = STRING_DISABLED; }
+        };
+    }
+
+RESOURCE DIALOG r_aknexquery_list_single_pane
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtListQueryControl;
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = LISTBOX
+                    {
+                     flags = EAknListBoxMenuList;					                      
+                    };
+                heading = STRING_SELECTALBUM;
+                };
+            }
+        };
+    }    
+
+RESOURCE DIALOG r_contacts_dialog_register
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtMultilineQuery;
+            id = ESocketsServerNameEdwin;
+            control = AVKON_DATA_QUERY
+                {
+                layout = EMultiDataFirstEdwin;
+                label = STRING_USERNAME;
+                control = EDWIN
+                    {
+                    flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+                    width = 20;
+                    lines = 1;
+                    maxlength = 20;
+                    default_input_mode = EAknEditorTextInputMode;
+					default_case = EAknEditorLowerCase ;
+					allowed_case_modes = EAknEditorLowerCase ;
+                    };
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMultilineQuery;
+            id = ESocketsPortNumberEdwin;
+            control = AVKON_DATA_QUERY
+                {
+                layout = EMultiDataSecondEdwin;
+                label = STRING_PHONENUMBER;
+                control = EDWIN
+                    {
+                    flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+                    width = 20;
+                    lines = 1;
+                    maxlength = 20;
+                    default_input_mode = EAknEditorNumericInputMode;
+					allowed_input_modes = EAknEditorNumericInputMode;
+                    };
+                };
+            }
+        };
+
+    }	   
+
+RESOURCE DIALOG r_contacts_dialog_registered
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtMultilineQuery;
+            id = 200;
+            control = AVKON_DATA_QUERY
+                {
+                layout = EMultiDataFirstEdwin;
+                label = STRING_USERNAME;
+                control = EDWIN
+                    {
+                    flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+                    width = 20;
+                    lines = 1;
+                    maxlength = 20;
+                    default_input_mode = EAknEditorTextInputMode;
+					default_case = EAknEditorLowerCase ;
+					allowed_case_modes = EAknEditorLowerCase ;
+                    };
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMultilineQuery;
+            id = 201;
+            control = AVKON_DATA_QUERY
+                {
+                layout = EMultiDataSecondEdwin;
+                label = STRING_PASSWORD;
+                control = EDWIN
+                    {
+                    flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+                    width = 20;
+                    lines = 1;
+                    maxlength = 10;
+                    default_input_mode = EAknEditorTextInputMode;
+				    //default_input_mode = EAknEditorNumericInputMode;
+					//allowed_input_modes = EAknEditorNumericInputMode;
+                    };
+                };
+            }
+        };
+
+    }
+
+RESOURCE DIALOG r_contacts_dialog_already_registered
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtMultilineQuery;
+            id = EGeneralQuery;
+            control = AVKON_DATA_QUERY
+                {
+                layout = EMultiDataFirstEdwin;
+                label = STRING_USERNAME;
+                control = EDWIN
+                    {
+                    flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable | EEikEdwinReadOnly;
+                    width = 25;
+                    lines = 1;
+                    maxlength = 20;
+                    default_input_mode = EAknEditorTextInputMode;
+     		    default_case = EAknEditorLowerCase ;
+		    allowed_case_modes = EAknEditorLowerCase ;
+					};
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMultilineQuery;
+            id = 201;
+            control = AVKON_DATA_QUERY
+                {
+                layout = EMultiDataSecondEdwin;
+                label = STRING_PASSWORD;
+                control = EDWIN
+                    {
+                    flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+                    width = 20;
+                    lines = 1;
+                    maxlength = 10;
+                    default_input_mode = EAknEditorTextInputMode;
+				    //default_input_mode = EAknEditorNumericInputMode;
+					//allowed_input_modes = EAknEditorNumericInputMode;
+                    };
+                };
+            }
+        };
+
+    }
+
+RESOURCE DIALOG r_change_password_dialog
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtMultilineQuery;
+            id = EGeneralQuery;
+            control = AVKON_DATA_QUERY
+                {
+                layout = EMultiDataFirstEdwin;
+                label = STRING_PASSWORD;
+                control = EDWIN
+                    {
+                    flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+                    width = 20;
+                    lines = 1;
+                    maxlength = 10;
+                    default_input_mode = EAknEditorTextInputMode;
+					//default_input_mode = EAknEditorNumericInputMode;					
+					};
+					//allowed_input_modes = EAknEditorNumericInputMode;
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMultilineQuery;
+            id = 201;
+            control = AVKON_DATA_QUERY
+                {
+                layout = EMultiDataSecondEdwin;
+                label = STRING_NEW_PASSWORD;
+                control = EDWIN
+                    {
+                    flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+                    width = 20;
+                    lines = 1;
+                    maxlength = 10;
+                    default_input_mode = EAknEditorTextInputMode;
+				    //default_input_mode = EAknEditorNumericInputMode;
+					//allowed_input_modes = EAknEditorNumericInputMode;
+                    };
+                };
+            }
+        };
+
+    }
+
+
+RESOURCE AVKON_VIEW r_unreg_view
+    {
+    hotkeys = r_newlist_hotkeys;
+    menubar = r_unreg_menubar_view;      
+    cba     = r_unregview_softkeys_options_minimize;
+    }
+
+RESOURCE CBA r_unregview_softkeys_options_minimize
+    {
+    buttons =
+        {
+        CBA_BUTTON {id=EAknSoftkeyOptions; txt = STRING_OPTIONS;},
+        CBA_BUTTON {id=EMinimize; txt = STRING_EXIT; }
+        };
+    }
+
+RESOURCE MENU_BAR r_unreg_menubar_view
+    {
+    titles =
+        {
+        MENU_TITLE { menu_pane = r_unreg_app_menu; txt = STRING_UNREG; }       
+        };
+    }
+
+RESOURCE MENU_PANE r_unreg_app_menu
+    {
+    items =
+        {				
+		MENU_ITEM { command = ESettings; txt = STRING_SETTINGS; }, 			
+		MENU_ITEM { command = ERegister; txt = STRING_REGISTER; },
+		MENU_ITEM { command = EHelp; txt = STRING_HELP; },
+		MENU_ITEM { command = EExit; txt = STRING_EXIT; }		    
+        };
+    }
+
+RESOURCE AVKON_VIEW r_reg_view
+    {
+    hotkeys = r_newlist_hotkeys;
+    menubar = r_reg_menubar_view;  
+    cba     = r_regview_softkeys_options_minimize;
+	//cba = R_AVKON_SOFTKEYS_OPTIONS_EXIT;
+    }
+
+RESOURCE CBA r_regview_softkeys_options_minimize
+    {
+    buttons =
+        {
+		CBA_BUTTON {id=EAknSoftkeyOptions; txt = STRING_OPTIONS;},
+        CBA_BUTTON {id=EMinimize; txt = STRING_EXIT; }
+                };
+    }
+
+RESOURCE MENU_BAR r_reg_menubar_view
+    {
+    titles =
+        {
+        MENU_TITLE { menu_pane = r_reg_app_menu; txt = STRING_UNREG; }       
+        };
+    }
+
+RESOURCE MENU_PANE r_reg_app_menu
+    {
+    items =
+        {
+//		MENU_ITEM { command = EUpgradeClient; txt = string_upgrade; },
+		MENU_ITEM { command = EBackupList; cascade = r_cascase_backup_list; txt = STRING_BACKUP; },
+		MENU_ITEM { command = ESettingList; cascade = r_cascase_settings_list; txt = STRING_SETTINGS; },
+//		MENU_ITEM { command = EAboutErrorCode; txt = STRING_ERRORDETAILS; },
+//		MENU_ITEM { command = ESendToWeb; txt = STRING_SENDTOVAULT; },
+//		MENU_ITEM { command = EShowUploadCount; txt = STRING_SHOWUPLOADCOUNT; },
+		MENU_ITEM { command = EOtherList; cascade = r_cascade_other_list; txt = STRING_OTHER; }
+        };
+    }
+
+RESOURCE MENU_PANE r_cascade_other_list
+    {
+    items=
+        {
+		MENU_ITEM { command = EUpgradeClient; txt = string_upgrade; },
+		MENU_ITEM { command = EShareList; cascade = r_cascade_share_list; txt = STRING_SHARE; },
+		MENU_ITEM { command = EQueueList; cascade = r_cascase_clearqueue_list; txt = STRING_CLEARQUEUE; },
+		MENU_ITEM { command = EViewAlbum; txt = STRING_VIEWALBUM; },
+		MENU_ITEM { command = EChangePassword; txt = STRING_CHANGEPASSWORD; },
+		MENU_ITEM { command = ESuspend; txt = STRING_SUSPEND; },
+		MENU_ITEM { command = EHelp; txt = STRING_HELP; }
+        };
+    }
+
+RESOURCE MENU_PANE r_cascade_share_list
+    {
+    items=
+        {
+		MENU_ITEM { command = EShareAlbum; txt = STRING_ALBUM; },
+		MENU_ITEM { command = EShareClient; txt = STRING_RIPPLEVAULT; }
+        };
+    }
+
+RESOURCE MENU_PANE r_cascase_backup_list
+    {
+    items=
+        {
+        MENU_ITEM { command=EBackupPhoneBook	;txt=STRING_PHONEBOOK; },
+		MENU_ITEM { command=EBackupPhotos		;txt=STRING_PHOTOS; },
+		MENU_ITEM { command=EBackupVideos		;txt=STRING_VIDEOS; },
+		MENU_ITEM { command=EBackupSMS			;txt=STRING_SMS; }
+        };
+    }
+
+RESOURCE MENU_PANE r_cascase_settings_list
+    {
+    items=
+        {
+        MENU_ITEM { command=ESettingsPhoneBook	;txt=STRING_PHONEBOOK; },
+		MENU_ITEM { command=ESettingsPhotos		;txt=STRING_PHOTOSANDVIDEOS; },
+		MENU_ITEM { command=ESettingsSMS		;txt=STRING_SMS; },
+		MENU_ITEM { command=ESettingsAntitheft	;txt=STRING_ANTITHEFT; },
+		MENU_ITEM { command=ESettingsGeneral	;txt=STRING_GENERAL; }
+        };
+    }
+
+RESOURCE MENU_PANE r_cascase_clearqueue_list
+    {
+    items=
+        {
+        //MENU_ITEM { command=EClearPhoneBookQueue	;txt=STRING_PHONEBOOK; },
+		MENU_ITEM { command=EClearMediaQueue		;txt=STRING_PHOTOSANDVIDEOS; }
+		//MENU_ITEM { command=EClearSmsQueue		;txt=STRING_SMS; },
+        };
+    }
+
+RESOURCE AVKON_VIEW r_photolist_view
+    {
+    hotkeys = r_newlist_hotkeys;
+    menubar = r_photolist_menubar_view;   	
+	//cba = R_AVKON_SOFTKEYS_OPTIONS_DONE;
+    cba     = R_AVKON_SOFTKEYS_OPTIONS_BACK;
+    }
+
+RESOURCE MENU_BAR r_photolist_menubar_view
+    {
+    titles =
+        {
+        MENU_TITLE { menu_pane = r_photolist_app_menu; txt = STRING_LIST; }       
+        };
+    }
+
+RESOURCE MENU_PANE r_photolist_app_menu
+    {
+    items =
+        {
+		MENU_ITEM { command = ESendSel;	txt = STRING_BACKUP; },
+		MENU_ITEM { command = EBackupPhotosMode; cascade = r_backup_photos_mode; txt = STRING_SELECTUNSELECT; }		
+		//MENU_ITEM { command = ESendSel; txt = STRING_BACK; }
+        };
+    }
+
+RESOURCE MENU_PANE r_backup_photos_mode
+    {
+    items=
+        {
+			MENU_ITEM { command = EMarkSel;   txt = STRING_SELECTUNSELECT; },
+			MENU_ITEM { command = EMarkAll;   txt = STRING_SELECTALL; },
+			MENU_ITEM { command = EUnMarkAll; txt = STRING_UNSELECTALL; }
+        };
+    }   
+
+RESOURCE DIALOG R_WAITNOTE_DIALOG
+{
+	flags = EAknWaitNoteFlags;	
+	items =
+	{
+	DLG_LINE
+		{
+			type = EAknCtNote;
+			id = EWaitNote;
+			control= AVKON_NOTE 
+			{ 
+				layout = EWaitLayout;
+				singular_label = STRING_REGISTERING;
+				animation = R_QGN_GRAF_WAIT_BAR_ANIM;
+			};
+		}
+	};
+}
+
+RESOURCE DIALOG R_WAITNOTE_SCAN_DIALOG
+{
+	flags = EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;	
+	items =
+	{
+	DLG_LINE
+		{
+			type = EAknCtNote;
+			id = EWaitNote;
+			control= AVKON_NOTE 
+			{ 
+				layout = EWaitLayout;
+				singular_label = STRING_BACKINGUPMESSAGES;
+				animation = R_QGN_GRAF_WAIT_BAR_ANIM;
+			};
+		}
+	};
+}
+
+RESOURCE AVKON_VIEW r_help_view
+{
+    hotkeys = r_newlist_hotkeys;        
+	menubar = r_help_menubar_view;
+    //cba     = R_AVKON_SOFTKEYS_OPTIONS_CANCEL;    	
+	cba     = r_help_softkeys_options_cancel;
+}
+
+RESOURCE CBA r_help_softkeys_options_cancel
+    {
+    buttons =
+        {
+        CBA_BUTTON {id=EAknSoftkeyOptions; txt = STRING_ABOUT;},
+        CBA_BUTTON {id=EAknSoftkeyCancel; txt = STRING_CANCEL; }
+        };
+    }
+
+RESOURCE MENU_BAR r_help_menubar_view
+    {
+    titles =
+        {
+        MENU_TITLE { menu_pane = r_help_app_menu; txt = STRING_HELP; }       
+        };
+    }
+
+RESOURCE MENU_PANE r_help_app_menu
+    {
+    items =
+        {
+		MENU_ITEM { command = ERipplevault; txt = STRING_RIPPLEVAULT; },		
+		MENU_ITEM { command = EContacts; txt = STRING_CONTACTSBACKUP; },
+		MENU_ITEM { command = ERestoring; txt = STRING_RESTORINGCONTACTS; },
+		MENU_ITEM { command = EPhotos; txt = STRING_PHOTOSVIDEOSBACKUP; },
+		//MENU_ITEM { command = EViewing; txt = STRING_VIEWINGPHOTOSVIDEOS; },				
+		MENU_ITEM { command = ESMSBackup; txt = STRING_SMSBACKUP; }				
+        };
+    }
+
+RESOURCE EDWIN r_help_box
+{
+   flags =  EEikEdwinReadOnly| EEikEdwinResizable| EEikEdwinAvkonDisableCursor|EEikEdwinNoAutoSelection;
+   width = 10;
+   lines = 5;
+   maxlength = 500;
+   avkon_flags = EAknEditorFlagEnableScrollBars;
+}
+
+RESOURCE DIALOG r_smart_charge
+{
+    flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+	items=
+	{
+		DLG_LINE 
+		{
+			type = EAknCtPopupHeadingPane;
+			id = EAknMessageQueryHeaderId;
+			control = AVKON_HEADING
+			{
+				headinglayout=R_AVKON_LIST_HEADING_PANE_POPUPS;
+				label = STRING_RIPPLEVAULT; 
+			};
+		},
+		DLG_LINE
+		{
+			type = EAknCtMessageQuery;
+			id = EAknMessageQueryContentId;
+			control = AVKON_MESSAGE_QUERY
+			{
+			};
+		}
+	};
+}
+
+RESOURCE DIALOG r_access_point
+{
+    flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_OK_EMPTY;
+	items=
+	{
+		DLG_LINE 
+		{
+			type = EAknCtPopupHeadingPane;
+			id = EAknMessageQueryHeaderId;
+			control = AVKON_HEADING
+			{
+				headinglayout=R_AVKON_LIST_HEADING_PANE_POPUPS;
+				label = STRING_SETUPWIZARD;
+			};
+		},
+		DLG_LINE
+		{
+			type = EAknCtMessageQuery;
+			id = EAknMessageQueryContentId;
+			control = AVKON_MESSAGE_QUERY
+			{
+			};
+		}
+	};
+}
+
+RESOURCE DIALOG r_desc_name_query
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtQuery;
+            id = EGeneralQuery;
+            control = AVKON_DATA_QUERY
+                {
+                layout = EDataLayout;
+                label = STRING_DESCRIPTION;
+                control = EDWIN
+                    {
+                    flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+                    width = 25;
+                    maxlength = 50;
+                    max_view_height_in_lines = 1; 
+                    base_line_delta = 21; 
+                    };
+                };
+            }
+        };
+    }    
+
+RESOURCE DIALOG r_roaming_message
+{
+    flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+	items=
+	{
+		DLG_LINE 
+		{
+			type = EAknCtPopupHeadingPane;
+			id = EAknMessageQueryHeaderId;
+			control = AVKON_HEADING
+			{
+				headinglayout=R_AVKON_LIST_HEADING_PANE_POPUPS;
+				label = STRING_RIPPLEVAULT;
+			};
+		},
+		DLG_LINE
+		{
+			type = EAknCtMessageQuery;
+			id = EAknMessageQueryContentId;
+			control = AVKON_MESSAGE_QUERY
+			{
+			};
+		}
+	};
+}
+
+RESOURCE DIALOG r_roamingoff_message
+{
+    flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_OK_EMPTY;
+	items=
+	{
+		DLG_LINE 
+		{
+			type = EAknCtPopupHeadingPane;
+			id = EAknMessageQueryHeaderId;
+			control = AVKON_HEADING
+			{
+				headinglayout=R_AVKON_LIST_HEADING_PANE_POPUPS;
+				label = STRING_RIPPLEVAULT;
+			};
+		},
+		DLG_LINE
+		{
+			type = EAknCtMessageQuery;
+			id = EAknMessageQueryContentId;
+			control = AVKON_MESSAGE_QUERY
+			{
+			};
+		}
+	};
+    }
+
+RESOURCE DIALOG r_about_query
+{
+	flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_OK_EMPTY;
+	items=
+	{
+		DLG_LINE 
+		{
+			type = EAknCtPopupHeadingPane;
+			id = EAknMessageQueryHeaderId;
+			control = AVKON_HEADING
+			{
+				headinglayout=R_AVKON_LIST_HEADING_PANE_POPUPS;
+				label = STRING_RIPPLEVAULT;
+			};
+		},
+		DLG_LINE
+		{
+			type = EAknCtMessageQuery;
+			id = EAknMessageQueryContentId;
+			control = AVKON_MESSAGE_QUERY
+			{
+			};
+		}
+	};
+}
+
+RESOURCE DIALOG r_setaccesspoint_error
+{
+	flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_OK_EMPTY;
+	items=
+	{
+		DLG_LINE 
+		{
+			type = EAknCtPopupHeadingPane;
+			id = EAknMessageQueryHeaderId;
+			control = AVKON_HEADING
+			{
+				headinglayout=R_AVKON_LIST_HEADING_PANE_POPUPS;
+				label = STRING_ACCESSPOINTERROR;
+			};
+		},
+		DLG_LINE
+		{
+			type = EAknCtMessageQuery;
+			id = EAknMessageQueryContentId;
+			control = AVKON_MESSAGE_QUERY
+			{
+			};
+		}
+	};
+}
+
+RESOURCE DIALOG r_upgrade_query
+{
+	flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	//buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+	buttons = R_AVKON_SOFTKEYS_OK_BACK;
+	items=
+	{
+		DLG_LINE 
+		{
+			type = EAknCtPopupHeadingPane;
+			id = EAknMessageQueryHeaderId;
+			control = AVKON_HEADING
+			{
+				headinglayout=R_AVKON_LIST_HEADING_PANE_POPUPS;
+				label = STRING_RIPPLEVAULT;
+			};
+		},
+		DLG_LINE
+		{
+			type = EAknCtMessageQuery;
+			id = EAknMessageQueryContentId;
+			control = AVKON_MESSAGE_QUERY
+			{
+			};
+		}
+	};
+}
+
+
+RESOURCE AVKON_VIEW r_findbox_view
+    {
+    hotkeys = r_newlist_hotkeys;
+    menubar = r_find_menubar_view;  
+    //cba     = R_AVKON_SOFTKEYS_SELECTION_LIST;    	
+	cba     = r_findview_softkeys_options;
+    }
+
+RESOURCE CBA r_findview_softkeys_options
+    {
+    buttons =
+        {
+        CBA_BUTTON {id=EFindOk; txt = STRING_OK;},
+        CBA_BUTTON {id=EFindCancel; txt = STRING_CANCEL; }
+        };
+    }
+RESOURCE MENU_BAR r_find_menubar_view
+    {
+    titles =
+        {
+        MENU_TITLE { menu_pane = r_find_app_menu; txt = STRING_FIND; }
+        };
+    }
+
+RESOURCE MENU_PANE r_find_app_menu
+    {
+    items =
+        {
+		//MENU_ITEM { command = EMail; txt = "Add EMail ID"; }, 	
+		MENU_ITEM { command = EMobile; txt = STRING_SELECTUNSELECT; },
+		MENU_ITEM { command = ERecpCancel; txt = STRING_CANCEL; }
+        };
+    }
+
+RESOURCE EDWIN r_mailid_edwin
+{
+    flags = EAknEditorFlagDefault;
+    width = 10;
+    lines= 5;
+    maxlength = 100;
+}
+
+RESOURCE DIALOG r_mailid_dialog
+{
+	flags = EEikDialogFlagNoDrag | EEikDialogFlagFillAppClientRect |
+            EEikDialogFlagNoTitleBar | EEikDialogFlagNoBorder |
+            EEikDialogFlagCbaButtons;
+   buttons =  R_AVKON_SOFTKEYS_OPTIONS_DONE;
+   form=r_mailid_form;
+ }
+RESOURCE FORM r_mailid_form
+{
+	flags=EEikFormEditModeOnly|EEikFormShowBitmaps;
+	items=
+	{		
+		DLG_LINE
+		{
+			type=EEikCtEdwin;
+			prompt=STRING_TO;
+			id=EmRecepientId;
+			itemflags = EEikDlgItemTakesEnterKey | EEikDlgItemOfferAllHotKeys;			
+			control=EDWIN
+			{
+				flags = EEikEdwinLineCursor | EEikEdwinNoHorizScrolling | EEikEdwinResizable | EEikEdwinNoAutoSelection | EEikEdwinReadOnly;
+                width = 3;
+                lines = 3;
+                maxlength = 1000;                
+                max_view_height_in_lines = 6;                 
+			};						
+		}
+	};
+}
+
+RESOURCE DIALOG r_sharealbum_dialog
+{
+   flags = EEikDialogFlagNoDrag | EEikDialogFlagFillAppClientRect |
+            EEikDialogFlagNoTitleBar | EEikDialogFlagNoBorder |
+            EEikDialogFlagCbaButtons;
+   buttons =  R_AVKON_SOFTKEYS_OPTIONS_DONE;
+   form=r_sharealbum_form;
+ }
+
+RESOURCE FORM r_sharealbum_form
+{
+	flags=EEikFormEditModeOnly|EEikFormShowBitmaps;
+	items=
+	{		
+		DLG_LINE
+		{
+			type=EEikCtEdwin;
+			prompt=STRING_TO;
+			id=EmRecepientId;
+			itemflags = EEikDlgItemTakesEnterKey | EEikDlgItemOfferAllHotKeys;			
+			control=EDWIN
+			{
+				flags = EEikEdwinLineCursor | EEikEdwinNoHorizScrolling | EEikEdwinResizable | EEikEdwinNoAutoSelection | EEikEdwinReadOnly;
+                width = 3;
+                lines = 3;
+                maxlength = 1000;                
+                max_view_height_in_lines = 6;                 
+			};						
+		},
+		DLG_LINE
+        {
+            type = EEikCtEdwin;
+            prompt = STRING_MESSAGE;
+            id = EmRecepientMessage;
+            itemflags = EEikDlgItemTakesEnterKey | EEikDlgItemOfferAllHotKeys;
+            control = EDWIN
+            {
+                flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+		avkon_flags = EAknEditorFlagNoT9;
+                width = 3;
+                lines = 3;
+                maxlength = 30;
+                max_view_height_in_lines = 5; 
+                base_line_delta = 21; 
+            };	
+        }
+	};
+}
+RESOURCE MENU_PANE r_mailid_extra_menu
+{
+   items = 
+     {		
+        MENU_ITEM { command = EAddRecp; txt =STRING_ADDRECIPIENT;},
+		MENU_ITEM { command = ERecpCancel; txt =STRING_BACK;}
+	 };
+}
+
+RESOURCE DIALOG r_sharing_data
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtListQueryControl;
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = LISTBOX
+                    {
+                    flags = EAknListBoxMenuList;
+                    height = 3;
+                    width = 3;
+                    array_id = r_sharing_data_array;
+                    };
+                heading = STRING_SELECTMAILS;
+                };
+            }
+        };
+    }    
+
+RESOURCE ARRAY r_sharing_data_array
+    {
+  items =
+        {
+        /*LBUF
+            {
+            txt = "EMail";
+            },*/
+        LBUF
+            {
+            txt = STRING_MOBILE;
+            }
+        };
+    }
+
+RESOURCE DIALOG r_sharing_option
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtQuery;
+            id = EGeneralQuery;
+            control = AVKON_DATA_QUERY
+                {
+                layout = EDataLayout;
+                label = STRING_ADDMESSAGE;
+                control = EDWIN
+                    {
+                    flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+                    width = 25;
+                    maxlength = 30;
+                    max_view_height_in_lines = 1; 
+                    base_line_delta = 21; 
+                    };
+                };
+            }
+        };
+    }    
+
+
+
+RESOURCE AVKON_VIEW r_mailid_view
+    {
+    hotkeys = r_newlist_hotkeys;
+    menubar = r_mailid_menubar_view;  
+    cba     = R_AVKON_SOFTKEYS_SELECTION_LIST;    	
+    }
+RESOURCE MENU_BAR r_mailid_menubar_view
+    {
+    titles =
+        {
+        MENU_TITLE { menu_pane = r_mailid_app_menu; txt = STRING_FIND; }
+        };
+    }
+
+RESOURCE MENU_PANE r_mailid_app_menu
+    {
+    items =
+        {
+			MENU_ITEM { command = ESearch; txt = STRING_SEARCH; },
+			MENU_ITEM { command = EAdd; txt = STRING_ADD; }
+        };
+    }
+
+RESOURCE DIALOG r_message_info
+{
+	flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_OK_EMPTY;
+	items=
+	{
+		DLG_LINE 
+		{
+			type = EAknCtPopupHeadingPane;
+			id = EAknMessageQueryHeaderId;
+			control = AVKON_HEADING
+			{
+				headinglayout=R_AVKON_LIST_HEADING_PANE_POPUPS;
+				label = STRING_RIPPLEVAULT;
+			};
+		},
+		DLG_LINE
+		{
+			type = EAknCtMessageQuery;
+			id = EAknMessageQueryContentId;
+			control = AVKON_MESSAGE_QUERY
+			{
+			};
+		}
+	};
+}
+
+RESOURCE DIALOG r_gallery_info
+{
+	flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_YES_NO;
+	items=
+	{
+		DLG_LINE 
+		{
+			type = EAknCtPopupHeadingPane;
+			id = EAknMessageQueryHeaderId;
+			control = AVKON_HEADING
+			{
+				headinglayout=R_AVKON_LIST_HEADING_PANE_POPUPS;
+				label = STRING_RIPPLEVAULT;
+			};
+		},
+		DLG_LINE
+		{
+			type = EAknCtMessageQuery;
+			id = EAknMessageQueryContentId;
+			control = AVKON_MESSAGE_QUERY
+			{
+			};
+		}
+	};
+}
+
+RESOURCE DIALOG r_select_main_option
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_OK_EMPTY;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtListQueryControl;
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = LISTBOX
+                    {
+                    flags = EAknListBoxMenuList;
+                    height = 2;
+                    width = 2;
+                    array_id = r_select_main_option_item;
+                    };
+                heading = STRING_RIPPLEVAULT;
+                };
+            }
+        };
+    }
+
+RESOURCE ARRAY r_select_main_option_item
+    {
+    items =
+        {
+        LBUF
+            {
+            txt = STRING_NEWUSER;
+            },
+        LBUF
+            {
+            txt = STRING_EXISTINGUSER;
+            }
+        };
+    }
+
+RESOURCE DIALOG r_upload_allphotos
+{
+    flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+	items=
+	{
+		DLG_LINE 
+		{
+			type = EAknCtPopupHeadingPane;
+			id = EAknMessageQueryHeaderId;
+			control = AVKON_HEADING
+			{
+				headinglayout=R_AVKON_LIST_HEADING_PANE_POPUPS;
+				label = STRING_RIPPLEVAULT;
+			};
+		},
+		DLG_LINE
+		{
+			type = EAknCtMessageQuery;
+			id = EAknMessageQueryContentId;
+			control = AVKON_MESSAGE_QUERY
+			{
+			};
+		}
+	};
+}
+
+RESOURCE DIALOG r_sim_info
+{
+	flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_YES_NO;
+	items=
+	{
+		DLG_LINE 
+		{
+			type = EAknCtPopupHeadingPane;
+			id = EAknMessageQueryHeaderId;
+			control = AVKON_HEADING
+			{
+				headinglayout=R_AVKON_LIST_HEADING_PANE_POPUPS;
+				label = STRING_RIPPLEVAULT;
+			};
+		},
+		DLG_LINE
+		{
+			type = EAknCtMessageQuery;
+			id = EAknMessageQueryContentId;
+			control = AVKON_MESSAGE_QUERY
+			{
+			};
+		}
+	};
+}
+
+RESOURCE DIALOG r_sms_dialog
+{
+	flags = EAknWaitNoteFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_CANCEL;
+	items =
+	{
+	DLG_LINE
+		{
+			type = EAknCtNote;
+			id = EWaitNote;
+			control= AVKON_NOTE 
+			{ 
+				layout = EWaitLayout;
+				singular_label = STRING_VALIDATING;
+				animation = R_QGN_GRAF_WAIT_BAR_ANIM;
+			};
+		}
+	};
+}
+
+
+RESOURCE DIALOG	r_mobile_number
+{
+	flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_OK_EMPTY;
+	items =
+	{
+	DLG_LINE
+		{
+		type = EAknCtQuery;
+		id = EGeneralQuery;
+		control = AVKON_DATA_QUERY
+		{
+		layout = EStaticSizeDataLayout;
+		label = STRING_MOBILENUMBER;
+		control = EDWIN
+			{
+			flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+			width = 25;
+			lines = 1;
+			maxlength = 20;
+			default_input_mode = EAknEditorNumericInputMode;
+			};
+		};
+		}
+	};
+}
+
+RESOURCE AVKON_VIEW r_smslist_view
+    {
+    hotkeys = r_newlist_hotkeys;
+    menubar = r_smslist_menubar_view;  
+    cba     = R_AVKON_SOFTKEYS_OPTIONS_BACK;
+	//cba = R_AVKON_SOFTKEYS_OPTIONS_DONE;
+    }
+
+RESOURCE MENU_BAR r_smslist_menubar_view
+    {
+    titles =
+        {
+        MENU_TITLE { menu_pane = r_smslist_app_menu; txt = STRING_LIST; }       
+        };
+    }
+
+RESOURCE MENU_PANE r_smslist_app_menu
+    {
+    items =
+        {
+		MENU_ITEM { command = ESendSel; txt = STRING_BACKUP; },
+		MENU_ITEM { command = EBackupSmsMode; cascade = r_backup_sms_mode; txt = STRING_SELECTUNSELECT; }		
+        };
+    }
+
+RESOURCE MENU_PANE r_backup_sms_mode
+    {
+    items=
+        {
+			MENU_ITEM { command = EMarkSel;   txt = STRING_SELECTUNSELECT; },
+			//MENU_ITEM { command = EMarkAll;   txt = STRING_SELECTALL; },
+			MENU_ITEM { command = EUnMarkAll; txt = STRING_UNSELECTALL; }
+        };
+    }   
+
+RESOURCE AVKON_VIEW r_manualsmslist_view
+    {
+    hotkeys = r_newlist_hotkeys;
+    menubar = r_manualsmslist_menubar_view;  
+    cba     = R_AVKON_SOFTKEYS_OPTIONS_DONE;    	
+    }
+
+RESOURCE MENU_BAR r_manualsmslist_menubar_view
+    {
+    titles =
+        {
+        MENU_TITLE { menu_pane = r_manualsmslist_app_menu; txt = STRING_LIST; }       
+        };
+    }
+
+RESOURCE MENU_PANE r_manualsmslist_app_menu
+    {
+    items =
+        {
+		MENU_ITEM { command = EMarkSel; txt = STRING_ADDCONTACTS; },		
+		MENU_ITEM { command = ESendSel; txt = STRING_DELETECONTACTS; },
+		MENU_ITEM { command = ERecpCancel; txt = STRING_CANCEL; }
+        };
+    }
+
+RESOURCE DIALOG r_contacts_settings_upload
+    {
+    flags = EGeneralQueryFlags;
+    buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtQuery;
+            id = EGeneralQuery;
+            control= AVKON_DATA_QUERY
+                {
+                layout = ENumberLayout;
+                label = STRING_NUMBEROFDAYS;
+//                control = NUMBER_EDITOR
+                control = AVKON_INTEGER_EDWIN
+                    {
+                    min = 1;
+                    max = 30;
+                    };
+                };
+            }
+        };
+    }
+
+RESOURCE DIALOG	r_password_dialog
+{
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+	buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+	items =
+	{
+	DLG_LINE
+		{
+		type = EAknCtQuery;
+		id = EGeneralQuery;
+		control = AVKON_DATA_QUERY
+		{
+		layout = EStaticSizeDataLayout;
+		label = STRING_PASSWORD;
+		control = EDWIN
+			{
+			flags = EEikEdwinNoHorizScrolling | EEikEdwinResizable;
+			width = 25;
+			lines = 1;
+			maxlength = 30;
+                    	default_input_mode = EAknEditorTextInputMode;
+			//allowed_input_modes = EAknEditorNumericInputMode;
+			//default_input_mode = EAknEditorNumericInputMode;
+			};
+		};
+		}
+	};
+}    
+
+RESOURCE DIALOG r_backup_data_query
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_YES_NO;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtListQueryControl;
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSingleGraphicPopupMenuListBox;
+                listbox = LISTBOX
+                    {
+                    flags = EAknListBoxMultiselectionList;
+                    height = 5;
+                    width = 5;
+                    array_id = r_backup_data_query_list_item;
+                    };
+                heading = STRING_BACKUPQUERY;
+                };
+            }
+        };
+    }
+
+RESOURCE ARRAY r_backup_data_query_list_item
+    {
+    items =
+        {
+        LBUF
+            {
+            txt = STRING_ALLCONTACTS;
+            },
+        LBUF
+            {
+            txt = STRING_ALLPHOTOS;
+            },
+        LBUF
+            {
+            txt = STRING_ALLVIDEOS;
+            },
+        LBUF
+            {
+            txt = STRING_ALLSMS;
+            }
+        };
+    }
+
+RESOURCE DIALOG r_select_image_option
+    {
+    flags = EGeneralQueryFlags | EEikDialogFlagWait | EAknWaitNoteFlags | EEikDialogFlagNotifyEsc;
+    buttons = R_AVKON_SOFTKEYS_OK_EMPTY;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtListQueryControl;
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = LISTBOX
+                    {
+                    flags = EAknListBoxMenuList;
+                    height = 3;
+                    width = 3;
+                    array_id = r_select_image_option_item;
+                    };
+                heading = STRING_RIPPLEVAULT;
+                };
+            }
+        };
+    }
+
+RESOURCE ARRAY r_select_image_option_item
+    {
+    items =
+        {
+        LBUF
+            {
+            txt = STRING_SAVE;
+            },
+        LBUF
+            {
+            txt = STRING_SAVE_SEND;
+            },
+        LBUF
+            {
+            txt = STRING_DISCARD;
+            }
+        };
+    }
+
+RESOURCE TBUF r_example_text_promptmode { buf=string_example_text_promptmode; }
+RESOURCE TBUF r_example_text_foldernotexist { buf=string_example_text_foldernotexist; }
+//RESOURCE TBUF r_example_text_wrongserverip { buf=string_example_text_wrongserverip; }
+RESOURCE TBUF r_example_text_networkerror { buf=string_example_text_networkerror; }
+RESOURCE TBUF r_example_text_tryagain { buf=string_example_text_tryagain; }
+RESOURCE TBUF r_example_text_notsel { buf=string_example_text_notsel; }
+RESOURCE TBUF r_example_text_notsel1 { buf=string_example_text_notsel1; }
+//RESOURCE TBUF r_example_user_name { buf=string_example_user_name ; }
+RESOURCE TBUF r_example_ripple_publish { buf=STRING_RIPPLEVAULT; }
+RESOURCE TBUF r_title_contacts { buf=string_title_contacts ; }
+//RESOURCE TBUF r_title_photos { buf=string_title_photos ; }
+//RESOURCE TBUF r_title_videos { buf=string_title_videos  ; }
+//RESOURCE TBUF r_title_messages { buf=string_title_messages  ; }
+//RESOURCE TBUF r_webupload_noimage { buf= string_webupload_noimage ; }
+RESOURCE TBUF r_webupload_nophotoimage { buf= string_webupload_nophotoimage ; }
+RESOURCE TBUF r_webupload_novideoimage { buf= string_webupload_novideoimage ; }
+//RESOURCE TBUF r_webupload_nomemorycard { buf= string_webupload_nomemorycard ; }
+RESOURCE TBUF r_example_settings { buf= string_example_settings ; }
+RESOURCE TBUF r_example_contacts_settings { buf= string_example_contacts_settings ; }
+RESOURCE TBUF r_example_photos_settings { buf= string_example_photos_settings ; }
+RESOURCE TBUF r_example_messages_settings { buf= string_example_messages_settings ; }
+//RESOURCE TBUF r_example_stopped { buf= string_example_stopped ; }
+RESOURCE TBUF r_example_running { buf= string_example_running ; }
+//RESOURCE TBUF r_invalid_iap { buf= string_invalid_iap ; }
+RESOURCE TBUF r_purpleace_web { buf= string_purpleace_web ; }
+//RESOURCE TBUF r_upgrade { buf= string_upgrade ; }
+//RESOURCE TBUF r_uptodate { buf= string_uptodate ; }
+//RESOURCE TBUF r_download { buf= string_download ; }
+RESOURCE TBUF r_text_register_gprsunavailable { buf= string_text_register_gprsunavailable ; }
+RESOURCE TBUF r_text_publish_gprsunavailable { buf= string_text_publish_gprsunavailable ; }   
+RESOURCE TBUF r_text_sharing_gprsunavailable { buf= string_text_sharing_gprsunavailable ; }   
+RESOURCE TBUF r_text_noalbums { buf= string_text_noalbums ; }
+RESOURCE TBUF r_tab_phone { buf= string_tab_phone ; }
+RESOURCE TBUF r_tab_memory { buf= string_tab_memory ; }
+RESOURCE TBUF r_contacts_message1 { buf= string_contacts_message1 ; }
+RESOURCE TBUF r_contacts_message2 { buf= string_contacts_message2 ; }
+RESOURCE TBUF r_photos_message_prompt { buf= string_photos_message_prompt ; }
+RESOURCE TBUF r_photos_message_auto { buf= string_photos_message_auto ; }
+RESOURCE TBUF r_photos_message_manual { buf= string_photos_message_manual ; }
+RESOURCE TBUF r_photos_message_description_on { buf= string_photos_message_description_on ; }
+RESOURCE TBUF r_photos_message_description_off { buf= string_photos_message_description_off ; }
+RESOURCE TBUF r_photos_message1 { buf= string_photos_message1 ; }
+RESOURCE TBUF r_photos_message2 { buf= string_photos_message2 ; }
+RESOURCE TBUF r_text_sms_auto { buf= string_text_sms_auto ; }
+RESOURCE TBUF r_text_sms_selective { buf= string_text_sms_selective ; }
+RESOURCE TBUF r_text_sms_manual { buf= string_text_sms_manual ; }
+RESOURCE TBUF r_text_sms_upload_time { buf= string_text_sms_upload_time ; }
+RESOURCE TBUF r_text_sms_roaming_message1 { buf= string_text_sms_roaming_message1 ; }
+RESOURCE TBUF r_text_sms_roaming_message2 { buf= string_text_sms_roaming_message2 ; }
+RESOURCE TBUF r_photos_recepient { buf= string_photos_recepient ; }
+RESOURCE TBUF r_select_recepient { buf= string_select_recepient ; }
+RESOURCE TBUF r_images_confirm_photos { buf= string_images_confirm_photos ; }
+RESOURCE TBUF r_images_confirm_videos { buf= string_images_confirm_videos ; }
+RESOURCE TBUF r_sms_confirm				 { buf= string_sms_confirm ; }
+RESOURCE TBUF r_images_confirm { buf= string_images_confirm ; }
+RESOURCE TBUF r_ripple_vault { buf= string_ripple_vault ; }
+RESOURCE TBUF r_vault_message { buf= string_vault_message ; }
+RESOURCE TBUF r_vault_message1 { buf= string_vault_message1 ; }
+RESOURCE TBUF r_ripple_sim { buf= string_ripple_sim ; }
+RESOURCE TBUF r_ripple_sim1 { buf= string_ripple_sim1 ; }
+RESOURCE TBUF r_ripple_close { buf= string_ripple_close ; }
+RESOURCE TBUF r_text_sharing_application_success { buf= string_text_sharing_application_success; }
+RESOURCE TBUF r_text_sharing_album_success { buf= string_text_sharing_album_success ; }
+RESOURCE TBUF r_text_unsharing_album_success { buf= string_text_unsharing_album_success ; }
+RESOURCE TBUF r_text_sharing_application_progress { buf= string_text_sharing_application_progress ; }
+RESOURCE TBUF r_text_sharing_album_progress { buf= string_text_sharing_album_progress ; }
+RESOURCE TBUF r_text_unsharing_album_progress { buf= string_text_unsharing_album_progress ; }
+RESOURCE TBUF r_text_synch_album_progress { buf= string_text_synch_album_progress ; }
+RESOURCE TBUF r_text_sms_backup_progress { buf= string_text_sms_backup_progress ; }
+//RESOURCE TBUF r_text_upgrade_checking_progress { buf= string_text_upgrade_checking_progress ; }
+//RESOURCE TBUF r_text_upgrade_download_progress { buf= string_text_upgrade_download_progress ; }
+RESOURCE TBUF r_text_select_message_first { buf= string_text_select_message_first ; }
+RESOURCE TBUF r_setupmessage_contacts { buf= string_setupmessage_contacts ; }
+RESOURCE TBUF r_setupmessage_publish { buf= string_setupmessage_publish ; }
+RESOURCE TBUF r_setupmessage_sms { buf= string_setupmessage_sms ; }
+RESOURCE TBUF r_setupmessage_contacts_settings { buf= string_setupmessage_contacts_settings ; }
+RESOURCE TBUF r_setupmessage_photos_settings { buf= string_setupmessage_photos_settings ; }
+RESOURCE TBUF r_setupmessage_messages_settings { buf= string_setupmessage_messages_settings ; }
+RESOURCE TBUF r_title_share_album { buf= string_title_share_album ; }
+RESOURCE TBUF r_title_tellafriend { buf= string_title_tellafriend ; }
+RESOURCE TBUF r_text_help_ripple_vault { buf= string_text_help_ripple_vault ; }
+RESOURCE TBUF r_text_help_smsbackup { buf= string_text_help_smsbackup ; }
+RESOURCE TBUF r_text_help_contactsbackup { buf= string_text_help_contactsbackup ; }
+RESOURCE TBUF r_text_help_restorecontacts { buf= string_text_help_restorecontacts ; }
+RESOURCE TBUF r_text_help_publishbackup { buf= string_text_help_publishbackup ; }
+RESOURCE TBUF r_text_help_publishbackup1 { buf= string_text_help_publishbackup1 ; }
+RESOURCE TBUF r_text_help_viewphotosvideos { buf= string_text_help_viewphotosvideos ; }
+RESOURCE TBUF r_title_help_ripple_vault { buf= string_title_help_ripple_vault ; }
+RESOURCE TBUF r_title_help_smsbackup { buf= string_title_help_smsbackup ; }
+RESOURCE TBUF r_title_help_contactsbackup { buf= string_title_help_contactsbackup ; }
+RESOURCE TBUF r_title_help_restorecontacts { buf= string_title_help_restorecontacts ; }
+RESOURCE TBUF r_title_help_publishbackup { buf= string_title_help_publishbackup ; }
+RESOURCE TBUF r_title_help_viewphotosvideos { buf= string_title_help_viewphotosvideos ; }
+//RESOURCE TBUF r_list_mainmenu_contacts { buf= string_list_mainmenu_contacts ; }
+//RESOURCE TBUF r_list_mainmenu_photos { buf= string_list_mainmenu_photos ; }
+//RESOURCE TBUF r_list_mainmenu_videos { buf= string_list_mainmenu_videos ; }
+//RESOURCE TBUF r_list_mainmenu_sms { buf= string_list_mainmenu_sms ; }
+//RESOURCE TBUF r_list_mainmenu_changeplan { buf= string_list_mainmenu_changeplan ; }
+//RESOURCE TBUF r_list_mainmenu_status { buf= string_list_mainmenu_status ; }
+//RESOURCE TBUF r_text_feature_construction { buf= string_text_feature_construction ; }
+//RESOURCE TBUF r_text_feature_construction_view_contacts { buf= string_text_feature_construction_view_contacts ; }
+//RESOURCE TBUF r_text_feature_construction_view_messages { buf= string_text_feature_construction_view_messages ; }
+//RESOURCE TBUF r_list_submenu_contacts_view { buf= string_list_submenu_contacts_view ; }
+//RESOURCE TBUF r_list_submenu_contacts_sendtovault { buf= string_list_submenu_contacts_sendtovault ; }
+//RESOURCE TBUF r_list_submenu_contacts_settings { buf= string_list_submenu_contacts_settings ; }
+//RESOURCE TBUF r_list_submenu_publish_view { buf= string_list_submenu_publish_view ; }
+//RESOURCE TBUF r_list_submenu_publish_sendtovault { buf= string_list_submenu_publish_sendtovault ; }
+//RESOURCE TBUF r_list_submenu_publish_getfromvault { buf= string_list_submenu_publish_getfromvault ; }
+//RESOURCE TBUF r_list_submenu_publish_share { buf= string_list_submenu_publish_share ; }
+//RESOURCE TBUF r_list_submenu_publish_unshare { buf= string_list_submenu_publish_unshare ; }
+//RESOURCE TBUF r_list_submenu_publish_settings { buf= string_list_submenu_publish_settings ; }
+//RESOURCE TBUF r_list_submenu_sms_view { buf= string_list_submenu_sms_view ; }
+//RESOURCE TBUF r_list_submenu_sms_sendtovault { buf= string_list_submenu_sms_sendtovault ; }
+//RESOURCE TBUF r_list_submenu_sms_getfromvault { buf= string_list_submenu_sms_getfromvault ; }
+//RESOURCE TBUF r_list_submenu_sms_settings { buf= string_list_submenu_sms_settings ; }
+RESOURCE TBUF r_default_album { buf= string_default_album ; }
+RESOURCE TBUF r_images_select_album { buf= string_images_select_album ; }
+RESOURCE TBUF r_statustext_sms_uploaded { buf= string_statustext_sms_uploaded ; }
+RESOURCE TBUF r_statustext_albums { buf= string_statustext_albums ; }
+RESOURCE TBUF r_statustext_photos_uploaded { buf= string_statustext_photos_uploaded ; }
+RESOURCE TBUF r_statustext_videos_uploaded { buf= string_statustext_videos_uploaded ; }
+RESOURCE TBUF r_statustext_contacts_uploaded { buf= string_statustext_contacts_uploaded ; }
+RESOURCE TBUF r_text_invalid_userid_password { buf= string_text_invalid_userid_password ; } 
+RESOURCE TBUF r_text_setup_wizard { buf= string_text_setup_wizard ; }
+RESOURCE TBUF r_tab_inbox { buf= string_tab_inbox ; }
+RESOURCE TBUF r_tab_sentitems { buf= string_tab_sentitems ; }
+RESOURCE TBUF r_text_select_recipients { buf= string_text_select_recipients ; }
+RESOURCE TBUF r_text_retry_password { buf= string_text_retry_password ; }
+RESOURCE TBUF r_setup_wizard_step_1 { buf=string_setup_wizard_step_1 ; }
+//RESOURCE TBUF r_setup_wizard_step_2 { buf=string_setup_wizard_step_2 ; }
+//RESOURCE TBUF r_setup_wizard_step_3 { buf=string_setup_wizard_step_3 ; }
+//RESOURCE TBUF r_setup_wizard_step_4 { buf=string_setup_wizard_step_4 ; }
+//RESOURCE TBUF r_setup_wizard_step_5 { buf=STRING_SETUPWIZARDSTEP5; }
+//RESOURCE TBUF r_setup_wizard_step_6 { buf=string_setup_wizard_step_6 ; }
+//RESOURCE TBUF r_setup_wizard_step_7 { buf=STRING_SETUPWIZARDSTEP7; }
+RESOURCE TBUF r_text_sub_status { buf=string_text_sub_status ; }
+RESOURCE TBUF r_text_sub_status_expired { buf= string_text_sub_status_expired ; }
+RESOURCE TBUF r_text_tell_friend { buf= string_text_tell_friend; }
+RESOURCE TBUF r_text_upload_publish { buf= string_text_upload_publish; }
+RESOURCE TBUF r_text_upload_sms { buf= string_text_upload_sms; }
+RESOURCE TBUF r_text_smsbackup_info { buf = string_text_smsbackup_info; }
+RESOURCE TBUF r_text_smsbackup_inboxsms { buf = string_text_smsbackup_inboxsms; }
+RESOURCE TBUF r_photos_securegallery_on { buf= string_photos_securegallery_on ; }
+RESOURCE TBUF r_photos_securegallery_off { buf= string_photos_securegallery_off ; }
+RESOURCE TBUF r_text_invalid_password { buf= string_text_invalid_password ; } 
+RESOURCE TBUF r_text_change_password_progress { buf= string_text_change_password_progress ; }
+RESOURCE TBUF r_text_change_password_success { buf= string_text_change_password_success ; }
+RESOURCE TBUF r_text_sharing_album_failed { buf = string_text_sharing_album_failed; }
+RESOURCE TBUF r_text_unsharing_album_failed { buf = string_text_unsharing_album_failed; }
+RESOURCE TBUF r_text_scanning_progress { buf= string_text_scanning_progress ; }
+RESOURCE TBUF r_text_unshare_album_confirm { buf= string_text_unsharing_album_confirm ;}
+RESOURCE TBUF r_msisdn_change_message { buf= string_msisdn_change_message ;}
+RESOURCE TBUF r_text_sub_status_msisdnmismatch { buf=string_text_sub_status_msisdnmismatch;}
+RESOURCE TBUF r_text_sub_status_imeimismatch { buf=string_text_sub_status_imeimismatch;}
+RESOURCE TBUF r_text_register_msisdn_mismatch { buf=string_text_register_msisdn_mismatch;}
+RESOURCE TBUF r_text_roamingdisabled_sms { buf=string_text_roamingdisabled_sms ; }
+RESOURCE TBUF r_text_roamingdisabled_publish { buf=string_text_roamingdisabled_publish ; }
+RESOURCE TBUF r_text_roamingdisabled_contacts { buf=string_text_roamingdisabled_contacts ; }
+RESOURCE TBUF r_secure_message1 { buf=string_secure_message1; }
+RESOURCE TBUF r_secure_message2 { buf=string_secure_message2; }
+RESOURCE TBUF r_list_mainmenu_secure { buf=STRING_SECURE; }
+//RESOURCE TBUF r_securewizard_skip { buf=string_securewizard_skip; }
+
+RESOURCE TBUF r_text_contacts_sendtoweb { buf=string_text_contacts_sendtoweb; }
+
+RESOURCE TBUF r_statustext_items_pending { buf=string_statustext_items_pending; }
+
+RESOURCE TBUF r_shorttext_network_errcode_parsing { buf = string_shorttext_network_errcode_parsing; }
+RESOURCE TBUF r_shorttext_network_errcode_failed { buf = string_shorttext_network_errcode_failed; }
+RESOURCE TBUF r_shorttext_network_errcode_timedout { buf = string_shorttext_network_errcode_timedout; }
+RESOURCE TBUF r_shorttext_network_errcode_msisdnmismatch { buf = string_shorttext_network_errcode_msisdnmismatch; }
+RESOURCE TBUF r_shorttext_network_errcode_imeimismatch { buf = string_shorttext_network_errcode_imeimismatch; }
+RESOURCE TBUF r_shorttext_network_errcode_accsuspended { buf = string_shorttext_network_errcode_accsuspended; }
+
+RESOURCE TBUF r_text_network_errcode_parsing { buf = string_text_network_errcode_parsing; }
+RESOURCE TBUF r_text_network_errcode_failed { buf = string_text_network_errcode_failed; }
+RESOURCE TBUF r_text_network_errcode_timedout { buf = string_text_network_errcode_timedout; }
+RESOURCE TBUF r_text_network_errcode_msisdnmismatch { buf = string_text_network_errcode_msisdnmismatch; }
+RESOURCE TBUF r_text_network_errcode_imeimismatch { buf = string_text_network_errcode_imeimismatch; }
+RESOURCE TBUF r_text_network_errcode_accsuspended { buf = string_text_network_errcode_accsuspended; }
+
+RESOURCE TBUF r_text_network_status_connecting { buf = string_text_network_status_connecting;}
+RESOURCE TBUF r_text_network_status_uploading_media { buf = string_text_network_status_uploading_media;}
+RESOURCE TBUF r_text_network_status_uploading_sms { buf = string_text_network_status_uploading_sms;}
+RESOURCE TBUF r_text_network_status_uploading_contacts { buf = string_text_network_status_uploading_contacts; }
+RESOURCE TBUF r_text_network_status_failed { buf = string_text_network_status_failed; }
+RESOURCE TBUF r_text_network_status_synching_albums { buf = string_text_network_status_synching_albums; }
+RESOURCE TBUF r_text_network_status_running { buf = string_text_network_status_running; }
+RESOURCE TBUF r_text_network_status_checking_account { buf = string_text_network_status_checking_account; }
+RESOURCE TBUF r_text_network_status_suspended_byuser { buf = string_text_network_status_suspended_byuser; }
+RESOURCE TBUF r_text_network_status_suspended_roaming { buf = string_text_network_status_suspended_roaming; }
+RESOURCE TBUF r_text_network_status_suspended_simchange { buf = string_text_network_status_suspended_simchange; }
+
+RESOURCE TBUF r_statustext_running { buf= string_statustext_running ; }
+
+RESOURCE TBUF r_text_network_error { buf= string_text_network_error; }
+
+RESOURCE TBUF r_statustext_zeroitems { buf = string_statustext_zeroitems; }
+
+RESOURCE TBUF r_statustext_options { buf = STRING_OPTIONS; }
+RESOURCE TBUF r_statustext_emptytext { buf = ""; }
+
+RESOURCE TBUF r_statustext_help	{ buf = string_statustext_help; }
+
+RESOURCE TBUF r_setupwizard_uploadall	{ buf = string_setupwizard_uploadall; }
+
+RESOURCE TBUF r_uploadinfo_sms_uploaded { buf= string_uploadinfo_sms_uploaded ; }
+RESOURCE TBUF r_uploadinfo_albums { buf= string_uploadinfo_albums ; }
+RESOURCE TBUF r_uploadinfo_photos_uploaded { buf= string_uploadinfo_photos_uploaded ; }
+RESOURCE TBUF r_uploadinfo_videos_uploaded { buf= string_uploadinfo_videos_uploaded ; }
+RESOURCE TBUF r_uploadinfo_contacts_uploaded { buf= string_uploadinfo_contacts_uploaded ; }
+
+RESOURCE TBUF r_internet_apn_error { buf= string_internet_apn_error ; }
+
+RESOURCE TBUF r_text_upgrade_inboxsms {buf = string_text_upgrade_inboxsms ; }
+RESOURCE TBUF r_text_upgrade_available { buf = string_text_upgrade_available ; }
+RESOURCE TBUF r_text_registering_progress { buf= STRING_REGISTERING; }
+RESOURCE TBUF r_text_upgrade_info { buf = string_text_upgrade_info ; }
+RESOURCE TBUF r_text_sms_auto_hourly { buf = string_text_sms_auto_hourly; }
+
+RESOURCE TBUF r_exit_secureprompt { buf = string_exit_secureprompt; }
+RESOURCE TBUF r_text_network_status_process_contacts { buf = string_text_network_status_process_contacts ;}
+
+RESOURCE TBUF r_statustext_items_uploaded { buf=string_statustext_items_uploaded; }
+RESOURCE TBUF r_statustext_lastsynch { buf=string_statustext_lastsynch; }
+RESOURCE TBUF r_list_submenu_securestatus { buf=string_list_submenu_securestatus; }
+RESOURCE TBUF r_setupwizard_smsbackupall_auto { buf=string_setupwizard_smsbackupall_auto; }
+RESOURCE TBUF r_setupwizard_smsbackupall_selective { buf=string_setupwizard_smsbackupall_selective; }
+RESOURCE TBUF r_sms_sendtoweb_busy { buf=string_sms_sendtoweb_busy; }
+
+RESOURCE TBUF r_clearmediaqueue_confirm { buf=string_clearmediaqueue_confirm; }
+
+RESOURCE TBUF r_secure_status { buf=string_text_secure_status; }
+
+RESOURCE TBUF r_text_sharing_album_empty				{ buf= string_text_sharing_album_empty ; }
+RESOURCE TBUF r_text_sharing_album_already_shared		{ buf= string_text_sharing_album_already_shared ; }
+RESOURCE TBUF r_text_sharing_album_invalid_number		{ buf= string_text_sharing_album_invalid_number ; }
+RESOURCE TBUF r_text_sharing_album_already_shared_rest	{ buf= string_text_sharing_album_already_shared_rest ; }
+RESOURCE TBUF r_text_sharing_album_invalid_number_rest	{ buf= string_text_sharing_album_invalid_number_rest ; }
+RESOURCE TBUF r_text_special_characters_username  		{ buf= string_text_special_characters_username ; }
+RESOURCE TBUF r_text_special_characters_password  		{ buf= string_text_special_characters_password ; }
+RESOURCE TBUF r_text_backup_message				  		{ buf= string_text_backup_message ; }
+RESOURCE TBUF r_text_cancel_backup				  		{ buf= string_text_cancel_backup ; }
+RESOURCE TBUF r_alarm_message1							{ buf= string_alarm_message1; }
+RESOURCE TBUF r_alarm_message2							{ buf= string_alarm_message2; }
+RESOURCE TBUF r_example_secure_settings					{ buf= string_example_secure_settings ; }
+RESOURCE TBUF r_text_upload_successfull_sms				{ buf= string_text_upload_successfull_sms ; }
+RESOURCE TBUF r_text_upload_successfull_sms1				{ buf= string_text_upload_successfull_sms1 ; }
+RESOURCE TBUF r_text_upload_successfull_sms2				{ buf= string_text_upload_successfull_sms2 ; }
+RESOURCE TBUF r_text_upload_successfull_sms3				{ buf= string_text_upload_successfull_sms3 ; }
+RESOURCE TBUF r_text_upload_successfull_sms4				{ buf= string_text_upload_successfull_sms4 ; }
+RESOURCE TBUF r_text_upload_successfull_sms5				{ buf= string_text_upload_successfull_sms5 ; }
+
+RESOURCE TBUF r_text_suspend							{ buf= STRING_SUSPEND ; }
+RESOURCE TBUF r_text_resume								{ buf= STRING_RESUME ; }
+
+RESOURCE TBUF r_antitheft_interest						{ buf = string_antitheft_interest; }
+RESOURCE TBUF r_suspend_confirm							{ buf = string_suspend_confirm; }
+RESOURCE TBUF r_resume_confirm							{ buf = string_resume_confirm; }
+
+RESOURCE TBUF r_contacts_uploadmessage1 { buf=string_contacts_uploadmessage1; }
+RESOURCE TBUF r_contacts_uploadmessage2 { buf=string_contacts_uploadmessage2; }
+RESOURCE TBUF r_contacts_uploadmessage3 { buf=string_contacts_uploadmessage3; }

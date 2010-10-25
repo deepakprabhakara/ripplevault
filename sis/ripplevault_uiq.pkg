@@ -1,0 +1,33 @@
+&EN,FR
+
+
+#{"Ripple Vault","Vault"},(0x102032D0),2,6,2 
+(0x101F80BE), 1, 0, 0, {"SonyEricssonP80xPlatformProductID","SonyEricssonP80xPlatformProductID"} 
+;(0x101F617B), 2, 0, 0, {"UIQ20ProductID","UIQ20ProductID"} 
+
+
+".\dns.txt"-"!:\system\apps\ripplevault\dns.txt"
+".\config.txt"-"!:\system\apps\ripplevault\config.txt"
+"..\images\tick.mbm"-"!:\system\apps\ripplevault\tick.mbm"
+"..\images\sms.mbm"-"!:\system\apps\ripplevault\sms.mbm"
+"..\images\logo_uiq.mbm"-"!:\system\apps\ripplevault\logo_uiq.mbm"
+"..\images\icons.mbm"-"!:\system\apps\ripplevault\icons.mbm"
+"..\images\video.mbm"-"!:\system\apps\ripplevault\video.mbm"
+"..\images\subicons.mbm"-"!:\system\apps\ripplevault\subicons.mbm"
+"..\images\ripplevault_uiq.aif"-"!:\system\apps\ripplevault\ripplevault.aif"
+"..\autostart\install\uiq\vl_autostart.mdl"-"!:\system\recogs\vl_autostart.mdl"
+"c:\Symbian\UIQ_21\epoc32\release\armi\urel\ripplevault.app"-"!:\system\apps\ripplevault\ripplevault.app"
+"c:\Symbian\UIQ_21\epoc32\release\armi\urel\ripplevault_uiq.r01"-"!:\system\apps\ripplevault\ripplevault.r01"
+
+; Make sure the configuration file is removed on uninstall
+;
+""-"!:\system\apps\ripplevault\Regripplevault.dat",FN
+""-"!:\system\apps\ripplevault\log.txt",FN
+""-"!:\system\apps\ripplevault\logo_uiq.mbm",FN
+""-"!:\system\apps\ripplevault\tick.mbm",FN
+""-"!:\system\apps\ripplevault\photos.db",FN
+""-"!:\system\apps\ripplevault\RegDetails.dat",FN
+""-"!:\system\apps\ripplevault\config.txt",FN
+""-"!:\system\apps\ripplevault\dns.txt",FN
+""-"!:\system\apps\ripplevault\ripplevault.aif",FN
+""-"!:\system\recogs\vl_autostart.mdl",FN

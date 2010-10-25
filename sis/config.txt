@@ -1,0 +1,16 @@
+version=2.6.8
+os=6.1
+server=222.165.138.247
+port=8080
+contacts_url=/axiom/rippleservlet
+registration_url=/axiom/rippleservlet
+media_upload_url=/axiom/mediauploadservlet
+sharing_url=/axiom/sharingservlet
+media_gallery_url=/axiomwap/secure/mediaGallery.do
+sms_backup_url=/axiom/smsServlet
+album_synch_url=/axiom/albumsyncingservlet
+sub_status_check=/axiom/status
+apn=NOHARDCODE
+phone_model=Nokia7610
+billing_reg_type=p
+hp=D62DB90BF88

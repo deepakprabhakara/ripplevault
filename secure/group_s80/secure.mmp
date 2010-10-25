@@ -1,0 +1,52 @@
+// Secure.mmp
+//
+// Copyright (c) 2002 Symbian Ltd.  All rights reserved.
+//
+
+// using relative paths for sourcepath and user includes
+
+TARGET        Secure.app
+TARGETTYPE    app
+UID           0x100039ce 0x102032D1
+TARGETPATH    \system\apps\Secure
+
+MACRO	__UIQ__
+MACRO	__S80__
+
+LANG		  01
+
+SOURCEPATH    ..\rss
+RESOURCE      Secure_S80.rss
+
+SOURCEPATH    ..\SRC
+USERINCLUDE   ..\INC
+USERINCLUDE . ..\inc\S80
+SYSTEMINCLUDE \EPOC32\INCLUDE
+
+SOURCE        SecureApp.cpp
+SOURCE        SecureDocument.cpp
+SOURCE        SecureAppUi.cpp
+SOURCE		  SmsLockEngine.cpp
+SOURCE		  SmsUnLockEngine.cpp
+SOURCE		  SoundEngine.cpp
+SOURCE	      timeouttimer.cpp
+SOURCE	      SmsVacuumEngine.cpp
+SOURCE	      SmsFile.cpp
+SOURCE	      SoundPlayer.cpp
+SOURCE	      PasswordEngine.cpp
+SOURCE  	  ScreenUpdateEngine.cpp
+SOURCE		  SmsUnSubscribeEngine.cpp
+
+SOURCEPATH ..\src\S80
+SOURCE        SecureAppView.cpp
+SOURCE		  Imsi.cpp
+
+LIBRARY     euser.lib apparc.lib cone.lib eikcore.lib eikcoctl.lib
+LIBRARY		apgrfx.lib ws32.lib bafl.lib Etel3rdParty.lib
+LIBRARY		efsrv.lib esock.lib smsu.lib gsmu.lib estor.lib
+LIBRARY		msgs.lib etext.lib smcm.lib fbscli.lib send.lib
+LIBRARY		muiu.lib etel.lib commdb.lib cntmodel.lib
+LIBRARY		mediaclientaudio.lib eikdlg.lib eikctl.lib 
+//LIBRARY gsmadv.lib
+
+//AIF secure.aif ..\secure_uiq\aif_uiq secure.rss c8 rippleimage.bmp rippleimagem.bmp rippleicon.bmp rippleiconm.bmp

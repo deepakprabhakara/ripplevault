@@ -1,0 +1,16 @@
+// Simple.hrh
+//
+// Copyright (c) 2002 Symbian Ltd.  All rights reserved.
+//
+
+#ifndef __SECURE_S80_HRH__
+#define __SECURE_S80_HRH__
+
+enum SimpleCommands
+{
+	TCancel=200,
+	EPassWord,
+	TClose	
+};
+
+#endif

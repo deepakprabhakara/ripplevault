@@ -1,0 +1,38 @@
+; ripplevault.pkg
+;
+
+;Language - standard language definitions
+&EN
+
+; standard SIS file header
+#{"Ripple Vault"},(0x102032D0),2,6,2,TYPE=SISAPP
+
+;Supports Series 60 v 0.9
+(0x101F6F88), 0, 0, 0, {"Series60ProductID"}
+
+;
+"..\sis\dns.txt"-"!:\system\apps\ripplevault\dns.txt"
+"..\sis\config.txt"-"!:\system\apps\ripplevault\config.txt"
+;
+"..\images\icons.mbm"-"!:\system\apps\ripplevault\icons.mbm"
+"..\images\logo.mbm"-"!:\system\apps\ripplevault\logo.mbm"
+"..\images\empty.mbm"-"!:\system\apps\ripplevault\empty.mbm"
+"..\images\video.mbm"-"!:\system\apps\ripplevault\video.mbm"
+"..\images\mobile.mbm"-"!:\system\apps\ripplevault\mobile.mbm"
+"..\images\marking.mbm"-"!:\system\apps\ripplevault\marking.mbm"
+"..\images\subicons.mbm"-"!:\system\apps\ripplevault\subicons.mbm"
+"..\images\settings.mbm"-"!:\system\apps\ripplevault\settings.mbm"
+"..\images\phototick.mbm"-"!:\system\apps\ripplevault\phototick.mbm"
+"..\images\tick.mbm"-"!:\system\apps\ripplevault\tick.mbm"
+"..\images\sms.mbm"-"!:\system\apps\ripplevault\sms.mbm"
+"..\images\rippleimage.mbm"-"!:\system\apps\ripplevault\rippleimage.mbm"
+"..\images\ripplevault.aif"-"!:\system\apps\ripplevault\ripplevault.aif"
+;
+;"..\sis\ripplevault.r01"-"!:\system\apps\ripplevault\ripplevault.r01"
+;"..\sis\ripplevault.r59"-"!:\system\apps\ripplevault\ripplevault.r59"
+"C:\Symbian\7.0s\Series60_v20\Epoc32\release\armi\urel\ripplevault.APP"-"!:\system\apps\ripplevault\ripplevault.app"
+;"C:\Symbian\7.0s\Series60_v20\Epoc32\release\armi\urel\ripplevault.R01"-"!:\system\apps\ripplevault\ripplevault.rsc"
+"C:\Symbian\7.0s\Series60_v20\Epoc32\data\z\system\apps\RIPPLEVAULT\ripplevault.R01"-"!:\system\apps\ripplevault\ripplevault.rsc"
+;
+"..\autostart\install\sym7\vl_autostart.mdl"-"!:\system\recogs\vl_autostart.mdl"
+"..\StopApp\install\sym7\vault.exe"-"!:\system\apps\ripplevault\vault.exe",FR,RR,RW

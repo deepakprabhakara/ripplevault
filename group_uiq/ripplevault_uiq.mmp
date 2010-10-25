@@ -1,0 +1,92 @@
+// RippleVault_uiq.mmp
+//
+// Copyright (c) 2000-2005 PurpleACE.  All rights reserved.
+//
+
+// using relative paths for sourcepath and user includes
+
+TARGET            ripplevault.app
+TARGETTYPE        app
+UID               0x100039CE 0x102032D0
+TARGETPATH        \system\apps\ripplevault
+
+MACRO             __UIQ__
+MACRO			__LOGME__
+
+LANG 		  01
+
+SOURCEPATH        ..\src
+SOURCE			  ripplevault.cpp
+SOURCE            ripplevaultApplication.cpp
+SOURCE            ripplevaultdocument.cpp
+SOURCE            ripplevaultAppUi.cpp
+
+SOURCEPATH        ..\src\publish
+SOURCE			  socketsenginewriter.cpp
+SOURCE		      timeouttimer.cpp
+SOURCE	          phototimeouttimer.cpp
+SOURCE			  PhotosEngine.cpp
+SOURCE			  VideosEngine.cpp
+SOURCE			  DBEngine.cpp
+SOURCE		      PhotosTimer.cpp
+//SOURCE 		      Smstimer.cpp
+
+SOURCEPATH        ..\src\sms
+SOURCE			  SmsFile.cpp
+SOURCE		      SmsSimEngine.cpp
+SOURCE		      SmsBackupTimer.cpp
+SOURCE		      ReadSmsAO.cpp
+SOURCE		      WriteSmsAO.cpp
+//SOURCE		      SmsBackupAO.cpp
+
+SOURCEPATH        ..\src\billing
+SOURCE		      BillingEngine.cpp
+
+SOURCEPATH        ..\src\uiq
+SOURCE			  UnRegisterView_Uiq.cpp
+//SOURCE			  MainScreenView_Uiq.cpp
+//SOURCE			  MainScreenListBox.cpp
+SOURCE			  PhotoScreenView_Uiq.cpp
+SOURCE			  MediaScreenListBox.cpp
+SOURCE			  VideoScreenView_Uiq.cpp
+SOURCE			  StatusScreenView_Uiq.cpp
+SOURCE			  SmsScreenView_Uiq.cpp
+SOURCE			  ContactsScreenView_Uiq.cpp
+SOURCE		      ReadContactsAO.cpp
+
+SOURCEPATH        ..\src\contacts\conn
+SOURCE			  contactssocketsenginewriter.cpp
+
+SOURCEPATH        ..\src\contacts\engine
+SOURCE            ContactsHandler.cpp
+SOURCE            RecordContactDB.cpp
+SOURCE            CopyContactsAO.cpp
+SOURCE		  	  ChangesContactsAO.cpp
+SOURCE			  UpdateContactsAO.cpp
+SOURCE            Smsengine.cpp
+SOURCE			  ContactsDBEngine.cpp
+SOURCE		      ContactsTimer.cpp
+
+SOURCEPATH        ..\src\contacts\utils
+SOURCE            EventQueue.cpp
+SOURCE            List.cpp
+
+SOURCEPATH        ..\rss
+RESOURCE          ripplevault_uiq.rss
+
+USERINCLUDE       ..\inc 
+USERINCLUDE       ..\inc\uiq
+USERINCLUDE       ..\inc\contacts
+USERINCLUDE       ..\inc\publish
+USERINCLUDE       ..\inc\sms
+USERINCLUDE       ..\images 
+
+SYSTEMINCLUDE     \epoc32\include
+
+LIBRARY       euser.lib apparc.lib cone.lib eikcore.lib eikcoctl.lib qikctl.lib
+LIBRARY       eikdlg.lib bafl.lib eikctl.lib ws32.lib GenConn.lib commdb.lib
+LIBRARY       fbscli.lib efsrv.lib apgrfx.lib edbms.lib esock.lib insock.lib
+LIBRARY       plpvariant.lib estor.lib etel.lib egul.lib mediaclientimage.lib 
+LIBRARY		  gsmu.lib smsu.lib cntmodel.lib charconv.lib msgs.lib gsmadv.lib	
+LIBRARY       capcodec.lib wapstkcli.lib nifman.lib muiu.lib smcm.lib
+LIBRARY 	  gsmBAS.lib etext.lib send.lib eikcdlg.lib
